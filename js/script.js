@@ -6,8 +6,8 @@
 
 // Identitas guru & sekolah
 const KONFIG = {
-    guru: 'Bapak/Ibu Guru',
-    sekolah: 'SD Negeri 1',
+    Created : 'JAC Media',
+    City : 'Pontianak',
     tahun: '2026',
     timerAktif: true,
     batasLulus: 70
