@@ -1,0 +1,2 @@
+# majalahsekolah
+hai saya guru
