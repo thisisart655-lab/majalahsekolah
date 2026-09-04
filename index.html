@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Belajar Seru - Website Pembelajaran SD</title>
+    <!-- Font & Ikon -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <!-- ====== NAVBAR ====== -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Belajar Seru</span>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Buka menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" data-page="home" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#" data-page="materi"><i class="fas fa-book"></i> Materi</a></li>
+                <li><a href="#" data-page="contoh"><i class="fas fa-pencil-alt"></i> Contoh Soal</a></li>
+                <li><a href="#" data-page="latihan"><i class="fas fa-tasks"></i> Soal Latihan</a></li>
+                <li><a href="#" data-page="ulangan"><i class="fas fa-file-alt"></i> Ulangan Harian</a></li>
+                <li><a href="#" data-page="about"><i class="fas fa-info-circle"></i> About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ====== MAIN CONTENT ====== -->
+    <main class="main-content">
+
+        <!-- ====== HOME ====== -->
+        <section id="page-home" class="page active-page">
+            <div class="container">
+                <div class="hero">
+                    <div class="hero-text">
+                        <h1>Belajar Jadi Menyenangkan! 🎉</h1>
+                        <p class="subtitle">Temukan materi seru, latihan soal, dan ulangan harian untuk siswa SD.</p>
+                        <a href="#" class="btn btn-primary btn-large" data-page="materi">
+                            <i class="fas fa-rocket"></i> Mulai Belajar
+                        </a>
+                    </div>
+                    <div class="hero-image">
+                        <i class="fas fa-child" style="font-size: 120px; color: #f9a825;"></i>
+                        <i class="fas fa-pencil-ruler" style="font-size: 80px; color: #42a5f5; margin-left: -20px;"></i>
+                    </div>
+                </div>
+
+                <div class="ringkasan">
+                    <h2><i class="fas fa-star"></i> Apa yang Bisa Kamu Lakukan?</h2>
+                    <div class="ringkasan-grid">
+                        <div class="ringkasan-card" data-page="materi">
+                            <i class="fas fa-book-open"></i>
+                            <h3>Pelajari Materi</h3>
+                            <p>Baca penjelasan seru dengan contoh yang mudah dipahami.</p>
+                        </div>
+                        <div class="ringkasan-card" data-page="contoh">
+                            <i class="fas fa-lightbulb"></i>
+                            <h3>Lihat Contoh Soal</h3>
+                            <p>Pahami cara menjawab soal dengan pembahasan lengkap.</p>
+                        </div>
+                        <div class="ringkasan-card" data-page="latihan">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>Kerjakan Latihan</h3>
+                            <p>Uji kemampuanmu dengan soal-soal interaktif.</p>
+                        </div>
+                        <div class="ringkasan-card" data-page="ulangan">
+                            <i class="fas fa-clipboard-check"></i>
+                            <h3>Ikuti Ulangan Harian</h3>
+                            <p>Evaluasi belajarmu dengan ulangan yang seru.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== MATERI ====== -->
+        <section id="page-materi" class="page">
+            <div class="container">
+                <h2><i class="fas fa-book"></i> Materi Belajar</h2>
+                <div class="materi-card">
+                    <h3>📘 Pecahan Sederhana</h3>
+                    <div class="materi-tujuan">
+                        <strong>Tujuan Pembelajaran:</strong>
+                        <p>Setelah belajar, kamu bisa mengenal pecahan, membaca pecahan, dan membandingkan pecahan sederhana.</p>
+                    </div>
+                    <div class="materi-body">
+                        <p><strong>Apa itu pecahan?</strong> Pecahan adalah bagian dari sesuatu yang utuh. Contoh: jika sebuah kue dipotong menjadi 4 bagian sama besar, maka 1 bagian disebut <strong>1/4</strong> (satu per empat).</p>
+                        <div class="materi-ilustrasi">
+                            <i class="fas fa-pizza-slice"></i>
+                            <span>🍕 1/4 pizza = 1 bagian dari 4 bagian</span>
+                        </div>
+                        <div class="materi-poin">
+                            <h4>✨ Poin Penting</h4>
+                            <ul>
+                                <li>Pecahan terdiri dari <strong>pembilang</strong> (angka atas) dan <strong>penyebut</strong> (angka bawah).</li>
+                                <li>Penyebut menunjukkan jumlah bagian yang sama.</li>
+                                <li>Pembilang menunjukkan jumlah bagian yang diambil.</li>
+                                <li>Contoh: 3/5 berarti 3 bagian dari 5 bagian yang sama.</li>
+                            </ul>
+                        </div>
+                        <div class="materi-kesimpulan">
+                            <h4>📌 Kesimpulan</h4>
+                            <p>Pecahan membantu kita menyatakan bagian dari keseluruhan. Dengan memahami pecahan, kita bisa membagi benda, menghitung, dan memecahkan masalah sehari-hari.</p>
+                        </div>
+                    </div>
+                    <!-- Catatan untuk guru: ubah konten di atas sesuai materi yang diinginkan -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== CONTOH SOAL ====== -->
+        <section id="page-contoh" class="page">
+            <div class="container">
+                <h2><i class="fas fa-pencil-alt"></i> Contoh Soal</h2>
+                <div id="contoh-container"></div>
+            </div>
+        </section>
+
+        <!-- ====== SOAL LATIHAN ====== -->
+        <section id="page-latihan" class="page">
+            <div class="container">
+                <h2><i class="fas fa-tasks"></i> Soal Latihan</h2>
+                <div id="latihan-container">
+                    <div id="latihan-start">
+                        <p>Siap belajar? Klik tombol di bawah untuk memulai latihan!</p>
+                        <button class="btn btn-primary" id="mulaiLatihanBtn"><i class="fas fa-play"></i> Mulai Latihan</button>
+                    </div>
+                    <div id="latihan-quiz" style="display:none;">
+                        <div class="quiz-header">
+                            <span id="latihan-nomor">Soal 1 / 5</span>
+                            <span id="latihan-progress">Progress: 0%</span>
+                        </div>
+                        <div id="latihan-soal"></div>
+                        <div id="latihan-pilihan"></div>
+                        <div class="quiz-nav">
+                            <button class="btn btn-secondary" id="latihan-nextBtn" disabled><i class="fas fa-arrow-right"></i> Soal Berikutnya</button>
+                        </div>
+                    </div>
+                    <div id="latihan-hasil" style="display:none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== ULANGAN HARIAN ====== -->
+        <section id="page-ulangan" class="page">
+            <div class="container">
+                <h2><i class="fas fa-file-alt"></i> Ulangan Harian</h2>
+                <div id="ulangan-container">
+                    <!-- Form awal -->
+                    <div id="ulangan-form">
+                        <div class="form-group">
+                            <label>Nama Siswa</label>
+                            <input type="text" id="ulangan-nama" placeholder="Masukkan nama kamu" />
+                        </div>
+                        <div class="form-group">
+                            <label>Kelas</label>
+                            <input type="text" id="ulangan-kelas" placeholder="Contoh: 4A" />
+                        </div>
+                        <button class="btn btn-primary" id="mulaiUlanganBtn"><i class="fas fa-play"></i> Mulai Ulangan</button>
+                    </div>
+                    <!-- Area soal -->
+                    <div id="ulangan-quiz" style="display:none;">
+                        <div class="quiz-header">
+                            <span id="ulangan-nomor">Soal 1 / 5</span>
+                            <span id="ulangan-progress">Progress: 0%</span>
+                            <span id="ulangan-timer" style="display:none;">⏱️ <span id="ulangan-timerDisplay">00:00</span></span>
+                        </div>
+                        <div id="ulangan-soal"></div>
+                        <div id="ulangan-pilihan"></div>
+                        <div class="quiz-nav">
+                            <button class="btn btn-secondary" id="ulangan-nextBtn" disabled><i class="fas fa-arrow-right"></i> Selanjutnya</button>
+                            <button class="btn btn-primary" id="ulangan-selesaiBtn" style="display:none;"><i class="fas fa-check"></i> Selesai</button>
+                        </div>
+                    </div>
+                    <!-- Hasil -->
+                    <div id="ulangan-hasil" style="display:none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== ABOUT ====== -->
+        <section id="page-about" class="page">
+            <div class="container">
+                <h2><i class="fas fa-info-circle"></i> Tentang Website</h2>
+                <div class="about-card">
+                    <h3>📚 Belajar Seru</h3>
+                    <p>Website pembelajaran ini dibuat khusus untuk siswa SD agar belajar menjadi menyenangkan dan mudah dipahami.</p>
+                    <div class="about-detail">
+                        <p><strong>👨‍🏫 Guru / Pembuat:</strong> <span id="about-guru">Bapak/Ibu Guru</span></p>
+                        <p><strong>🏫 Sekolah:</strong> <span id="about-sekolah">SD Negeri 1</span></p>
+                        <p><strong>📅 Tahun:</strong> <span id="about-tahun">2026</span></p>
+                        <p><strong>🎯 Tujuan:</strong> Membantu siswa memahami materi melalui latihan dan ulangan interaktif.</p>
+                    </div>
+                    <!-- Catatan untuk guru: ubah data di atas melalui variabel konfigurasi di script.js -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Website Pembelajaran - Dibuat untuk mendukung pembelajaran siswa.</p>
+        </div>
+    </footer>
+
+    <!-- ====== SCRIPT ====== -->
+    <script src="js/script.js"></script>
+</body>
+</html>
