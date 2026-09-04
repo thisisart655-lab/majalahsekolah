@@ -4,18 +4,17 @@
  * ============================================================
  */
 
-// Identitas guru & sekolah (digunakan di halaman About)
+// Identitas guru & sekolah
 const KONFIG = {
     guru: 'Bapak/Ibu Guru',
     sekolah: 'SD Negeri 1',
     tahun: '2026',
-    // Timer pada ulangan (true = aktif, false = nonaktif)
-    timerAktif: true, // set false untuk mematikan timer
-    batasLulus: 70 // nilai minimal untuk dinyatakan lulus
+    timerAktif: true,
+    batasLulus: 70
 };
 
 // ============================================================
-//  DATA SOAL – Guru dapat menambah/mengubah soal dengan mudah
+//  DATA SOAL
 // ============================================================
 
 /** Data untuk halaman Contoh Soal */
@@ -23,13 +22,13 @@ const contohSoal = [
     {
         pertanyaan: 'Berapa hasil dari 1/2 + 1/4?',
         pilihan: ['1/4', '3/4', '1/2', '2/4'],
-        jawaban: 1, // indeks jawaban benar (0-based)
+        jawaban: 1,
         pembahasan: '1/2 = 2/4, maka 2/4 + 1/4 = 3/4.'
     },
     {
         pertanyaan: 'Pecahan 3/5 lebih besar dari pecahan ...?',
         pilihan: ['1/2', '2/5', '4/5', '1/5'],
-        jawaban: 1, // 2/5
+        jawaban: 1,
         pembahasan: '3/5 = 0,6 ; 2/5 = 0,4. Jadi 3/5 lebih besar dari 2/5.'
     },
     {
@@ -109,7 +108,7 @@ const soalUlangan = [
 ];
 
 // ============================================================
-//  END DATA – Jangan ubah di bawah ini kecuali Anda paham JS
+//  END DATA
 // ============================================================
 
 // ===== NAVIGASI SPA =====
@@ -118,38 +117,30 @@ const navLinks = document.querySelectorAll('.nav-menu a');
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 
-// Toggle hamburger
 navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('active');
     navMenu.classList.toggle('open');
 });
 
-// Navigasi
 function navigateTo(pageId) {
-    // Sembunyikan semua halaman
     pages.forEach(p => p.classList.remove('active-page'));
-    // Tampilkan halaman target
     const target = document.getElementById(`page-${pageId}`);
     if (target) target.classList.add('active-page');
 
-    // Update aktif nav
     navLinks.forEach(link => {
         link.classList.remove('active');
         if (link.dataset.page === pageId) link.classList.add('active');
     });
 
-    // Tutup menu mobile
     navMenu.classList.remove('open');
-
-    // Simpan halaman terakhir di localStorage (opsional)
+    navToggle.classList.remove('active');
     localStorage.setItem('lastPage', pageId);
 
-    // Inisialisasi konten spesifik halaman
     if (pageId === 'contoh') renderContohSoal();
     if (pageId === 'latihan') resetLatihan();
     if (pageId === 'ulangan') resetUlangan();
 }
 
-// Event listener untuk nav dan kartu di home
 document.querySelectorAll('[data-page]').forEach(el => {
     el.addEventListener('click', (e) => {
         e.preventDefault();
@@ -158,7 +149,6 @@ document.querySelectorAll('[data-page]').forEach(el => {
     });
 });
 
-// Muat halaman terakhir atau home
 const lastPage = localStorage.getItem('lastPage') || 'home';
 navigateTo(lastPage);
 
@@ -185,7 +175,6 @@ function renderContohSoal() {
         container.appendChild(div);
     });
 
-    // Event toggle pembahasan
     document.querySelectorAll('.btn-pembahasan').forEach(btn => {
         btn.addEventListener('click', function() {
             const idx = this.dataset.index;
@@ -207,7 +196,6 @@ let latihanState = {
 };
 
 function resetLatihan() {
-    // Kembali ke tampilan awal
     document.getElementById('latihan-start').style.display = 'block';
     document.getElementById('latihan-quiz').style.display = 'none';
     document.getElementById('latihan-hasil').style.display = 'none';
@@ -233,7 +221,8 @@ function tampilSoalLatihan() {
 
     document.getElementById('latihan-nomor').textContent = `Soal ${state.current+1} / ${state.soal.length}`;
     const progress = Math.round(((state.current) / state.soal.length) * 100);
-    document.getElementById('latihan-progress').textContent = `Progress: ${progress}%`;
+    document.getElementById('latihan-progress').textContent = `${progress}%`;
+    document.getElementById('latihan-progress-fill').style.width = `${progress}%`;
 
     document.getElementById('latihan-soal').textContent = soal.pertanyaan;
     const pilihanDiv = document.getElementById('latihan-pilihan');
@@ -261,10 +250,8 @@ function tampilSoalLatihan() {
         });
     });
 
-    // Cek jika sudah menjawab sebelumnya, aktifkan tombol next
     document.getElementById('latihan-nextBtn').disabled = (state.jawabanUser[state.current] === null);
 
-    // Jika sudah soal terakhir, ubah teks tombol
     if (state.current === state.soal.length - 1) {
         document.getElementById('latihan-nextBtn').innerHTML = '<i class="fas fa-check"></i> Lihat Hasil';
     } else {
@@ -277,7 +264,6 @@ document.getElementById('latihan-nextBtn').addEventListener('click', function() 
     if (state.jawabanUser[state.current] === null) return;
 
     if (state.current === state.soal.length - 1) {
-        // Tampilkan hasil
         tampilkanHasilLatihan();
     } else {
         state.current++;
@@ -316,8 +302,6 @@ function tampilkanHasilLatihan() {
         </div>
     `;
     document.getElementById('latihanUlangiBtn').addEventListener('click', resetLatihan);
-
-    // Simpan nilai ke localStorage (contoh)
     localStorage.setItem('nilaiLatihan', nilai);
 }
 
@@ -330,16 +314,18 @@ let ulanganState = {
     timer: null,
     detik: 0,
     nama: '',
-    kelas: ''
+    kelas: '',
+    // Simpan detail jawaban untuk rekap
+    detailJawaban: []
 };
 
 function resetUlangan() {
-    // Kembali ke form
     document.getElementById('ulangan-form').style.display = 'block';
     document.getElementById('ulangan-quiz').style.display = 'none';
     document.getElementById('ulangan-hasil').style.display = 'none';
     ulanganState.current = 0;
     ulanganState.jawabanUser = [];
+    ulanganState.detailJawaban = [];
     ulanganState.selesai = false;
     if (ulanganState.timer) {
         clearInterval(ulanganState.timer);
@@ -369,10 +355,10 @@ document.getElementById('mulaiUlanganBtn').addEventListener('click', function() 
 
     ulanganState.current = 0;
     ulanganState.jawabanUser = new Array(ulanganState.soal.length).fill(null);
+    ulanganState.detailJawaban = [];
     ulanganState.selesai = false;
     ulanganState.detik = 0;
 
-    // Timer
     if (KONFIG.timerAktif) {
         document.getElementById('ulangan-timer').style.display = 'inline';
         if (ulanganState.timer) clearInterval(ulanganState.timer);
@@ -396,7 +382,8 @@ function tampilSoalUlangan() {
 
     document.getElementById('ulangan-nomor').textContent = `Soal ${state.current+1} / ${state.soal.length}`;
     const progress = Math.round(((state.current) / state.soal.length) * 100);
-    document.getElementById('ulangan-progress').textContent = `Progress: ${progress}%`;
+    document.getElementById('ulangan-progress').textContent = `${progress}%`;
+    document.getElementById('ulangan-progress-fill').style.width = `${progress}%`;
 
     document.getElementById('ulangan-soal').textContent = soal.pertanyaan;
     const pilihanDiv = document.getElementById('ulangan-pilihan');
@@ -421,7 +408,6 @@ function tampilSoalUlangan() {
         radio.addEventListener('change', function() {
             state.jawabanUser[state.current] = parseInt(this.value);
             document.getElementById('ulangan-nextBtn').disabled = false;
-            // Jika sudah menjawab semua, tampilkan tombol selesai
             const semuaTerjawab = state.jawabanUser.every(j => j !== null);
             document.getElementById('ulangan-selesaiBtn').style.display = semuaTerjawab ? 'inline-flex' : 'none';
         });
@@ -448,11 +434,90 @@ document.getElementById('ulangan-nextBtn').addEventListener('click', function() 
 });
 
 document.getElementById('ulangan-selesaiBtn').addEventListener('click', function() {
-    // Konfirmasi
     if (confirm('Apakah kamu yakin ingin menyelesaikan ulangan?')) {
         selesaikanUlangan();
     }
 });
+
+/**
+ * ============================================================
+ *  FUNGSI EXPORT KE EXCEL
+ * ============================================================
+ */
+function exportToExcel(data) {
+    try {
+        // Buat workbook
+        const wb = XLSX.utils.book_new();
+        
+        // Data untuk sheet
+        const wsData = [
+            ['REKAP NILAI ULANGAN HARIAN'],
+            [''],
+            ['Nama Siswa', data.nama],
+            ['Kelas', data.kelas],
+            ['Tanggal', new Date().toLocaleDateString('id-ID')],
+            ['Waktu', new Date().toLocaleTimeString('id-ID')],
+            [''],
+            ['Total Soal', data.total],
+            ['Jumlah Benar', data.benar],
+            ['Jumlah Salah', data.salah],
+            ['Nilai', data.nilai + ' (' + (data.lulus ? 'LULUS' : 'BELUM LULUS') + ')'],
+            [''],
+            ['DETAIL JAWABAN:'],
+            ['No', 'Soal', 'Jawaban Siswa', 'Jawaban Benar', 'Status']
+        ];
+
+        // Tambahkan detail jawaban per soal
+        data.detailJawaban.forEach((item, idx) => {
+            wsData.push([
+                idx + 1,
+                item.soal,
+                item.jawabanSiswa,
+                item.jawabanBenar,
+                item.status
+            ]);
+        });
+
+        // Tambahkan baris kosong dan keterangan
+        wsData.push(['']);
+        wsData.push(['Keterangan:']);
+        wsData.push(['✅ = Jawaban Benar']);
+        wsData.push(['❌ = Jawaban Salah']);
+        wsData.push(['']);
+        wsData.push(['Dibuat oleh: ' + KONFIG.guru]);
+        wsData.push(['Sekolah: ' + KONFIG.sekolah]);
+        wsData.push(['Tahun: ' + KONFIG.tahun]);
+
+        // Buat worksheet
+        const ws = XLSX.utils.aoa_to_sheet(wsData);
+        
+        // Set lebar kolom
+        ws['!cols'] = [
+            { wch: 8 },   // No
+            { wch: 50 },  // Soal
+            { wch: 25 },  // Jawaban Siswa
+            { wch: 25 },  // Jawaban Benar
+            { wch: 15 }   // Status
+        ];
+
+        // Merge cell untuk judul
+        ws['!merges'] = [
+            { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }
+        ];
+
+        // Tambahkan worksheet ke workbook
+        XLSX.utils.book_append_sheet(wb, ws, 'Rekap Nilai');
+
+        // Generate file
+        const fileName = `Rekap_Ulangan_${data.nama}_${new Date().toISOString().slice(0,10)}.xlsx`;
+        XLSX.writeFile(wb, fileName);
+        
+        return true;
+    } catch (error) {
+        console.error('Error export Excel:', error);
+        return false;
+    }
+}
 
 function selesaikanUlangan() {
     const state = ulanganState;
@@ -460,13 +525,39 @@ function selesaikanUlangan() {
         clearInterval(state.timer);
         state.timer = null;
     }
+    
     let benar = 0;
+    const detailJawaban = [];
+    
     state.jawabanUser.forEach((jaw, idx) => {
-        if (jaw === state.soal[idx].jawaban) benar++;
+        const soal = state.soal[idx];
+        const isBenar = jaw === soal.jawaban;
+        if (isBenar) benar++;
+        
+        detailJawaban.push({
+            soal: soal.pertanyaan,
+            jawabanSiswa: jaw !== null ? soal.pilihan[jaw] : '(Tidak dijawab)',
+            jawabanBenar: soal.pilihan[soal.jawaban],
+            status: isBenar ? '✅ Benar' : '❌ Salah'
+        });
     });
+    
     const total = state.soal.length;
+    const salah = total - benar;
     const nilai = Math.round((benar / total) * 100);
     const lulus = nilai >= KONFIG.batasLulus;
+
+    // Simpan data untuk export
+    const exportData = {
+        nama: state.nama,
+        kelas: state.kelas,
+        total: total,
+        benar: benar,
+        salah: salah,
+        nilai: nilai,
+        lulus: lulus,
+        detailJawaban: detailJawaban
+    };
 
     document.getElementById('ulangan-quiz').style.display = 'none';
     const hasilDiv = document.getElementById('ulangan-hasil');
@@ -478,31 +569,49 @@ function selesaikanUlangan() {
             <p><strong>Nama:</strong> ${state.nama}</p>
             <p><strong>Kelas:</strong> ${state.kelas}</p>
             <div class="nilai-besar">${nilai}</div>
-            <div class="keterangan" style="color: ${lulus ? '#27ae60' : '#e74c3c'}">
+            <div class="keterangan" style="color: ${lulus ? '#00B894' : '#E17055'}">
                 ${lulus ? '✅ Lulus' : '❌ Belum Lulus'}
             </div>
             <div class="detail">
                 <p>📝 Jumlah soal: ${total}</p>
                 <p>✅ Benar: ${benar}</p>
-                <p>❌ Salah: ${total - benar}</p>
+                <p>❌ Salah: ${salah}</p>
                 <p>🎯 Batas lulus: ${KONFIG.batasLulus}</p>
             </div>
-            <button class="btn btn-primary" id="ulanganUlangiBtn"><i class="fas fa-redo"></i> Ulangi Ulangan</button>
+            <div class="hasil-actions">
+                <button class="btn btn-success" id="exportExcelBtn">
+                    <i class="fas fa-file-excel"></i> Download Excel
+                </button>
+                <button class="btn btn-primary" id="ulanganUlangiBtn">
+                    <i class="fas fa-redo"></i> Ulangi Ulangan
+                </button>
+            </div>
         </div>
     `;
-    document.getElementById('ulanganUlangiBtn').addEventListener('click', resetUlangan);
 
-    // Simpan riwayat (contoh)
+    // Event untuk export Excel
+    document.getElementById('exportExcelBtn').addEventListener('click', function() {
+        const success = exportToExcel(exportData);
+        if (success) {
+            this.innerHTML = '<i class="fas fa-check"></i> Berhasil Diunduh!';
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-file-excel"></i> Download Excel';
+            }, 3000);
+        } else {
+            alert('Gagal mengunduh file Excel. Silakan coba lagi.');
+        }
+    });
+
+    document.getElementById('ulanganUlangiBtn').addEventListener('click', resetUlangan);
     localStorage.setItem('nilaiUlangan', nilai);
 }
 
-// ===== ABOUT – Isi dari konfigurasi =====
+// ===== ABOUT =====
 document.getElementById('about-guru').textContent = KONFIG.guru;
 document.getElementById('about-sekolah').textContent = KONFIG.sekolah;
 document.getElementById('about-tahun').textContent = KONFIG.tahun;
 
-// ===== INISIALISASI AWAL =====
-// Render contoh soal jika halaman contoh aktif saat load
+// ===== INISIALISASI =====
 if (document.getElementById('page-contoh').classList.contains('active-page')) {
     renderContohSoal();
 }
