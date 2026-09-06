@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Belajar Seru - Platform Pembelajaran SD</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <div id="particles-container"></div>
+
+    <!-- ====== NAVBAR ====== -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="nav-brand">
+                <div class="brand-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <span>Belajar<span class="highlight">Seru</span></span>
+                <span id="adminBadge" style="display:none;">👑 Admin</span>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" data-page="home" class="active">Beranda</a></li>
+                <li><a href="#" data-page="materi">Materi</a></li>
+                <li><a href="#" data-page="contoh">Contoh Soal</a></li>
+                <li><a href="#" data-page="latihan">Latihan</a></li>
+                <li><a href="#" data-page="ulangan">Ulangan</a></li>
+                <li><a href="#" data-page="rekap">📊 Rekap Nilai</a></li>
+                <li><a href="#" data-page="about">Tentang</a></li>
+                <li id="logoutNav" style="display:none;">
+                    <a href="#" id="logoutBtnNav" style="color:#E17055;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ====== MAIN ====== -->
+    <main>
+
+        <!-- HOME -->
+        <section id="page-home" class="page active-page">
+            <div class="hero-section">
+                <div class="container">
+                    <div class="hero-grid">
+                        <div class="hero-content" data-aos="fade-right" data-aos-delay="200">
+                            <div class="hero-badge">
+                                <span class="pulse-dot"></span>
+                                🚀 Platform Pembelajaran Interaktif
+                            </div>
+                            <h1 class="hero-title">
+                                Belajar Jadi<br>
+                                <span class="gradient-text">Menyenangkan</span>
+                            </h1>
+                            <p class="hero-desc">
+                                Temukan materi seru, latihan soal interaktif, dan ulangan harian 
+                                yang dirancang khusus untuk siswa SD.
+                            </p>
+                            <div class="hero-actions">
+                                <a href="#" class="btn btn-primary btn-large" data-page="materi">
+                                    <i class="fas fa-rocket"></i> Mulai Belajar
+                                </a>
+                                <a href="#" class="btn btn-outline" data-page="latihan">
+                                    <i class="fas fa-play-circle"></i> Coba Latihan
+                                </a>
+                            </div>
+                            <div class="hero-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number" data-count="50">0</span>
+                                    <span class="stat-label">+ Soal Tersedia</span>
+                                </div>
+                                <div class="stat-divider"></div>
+                                <div class="stat-item">
+                                    <span class="stat-number" data-count="12">0</span>
+                                    <span class="stat-label">Materi Pelajaran</span>
+                                </div>
+                                <div class="stat-divider"></div>
+                                <div class="stat-item">
+                                    <span class="stat-number" data-count="100">0</span>
+                                    <span class="stat-label">% Gratis</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-visual" data-aos="fade-left" data-aos-delay="400">
+                            <div class="hero-illustration">
+                                <div class="floating-card card-1">
+                                    <i class="fas fa-book-open"></i>
+                                    <span>Materi</span>
+                                </div>
+                                <div class="floating-card card-2">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    <span>Latihan</span>
+                                </div>
+                                <div class="floating-card card-3">
+                                    <i class="fas fa-trophy"></i>
+                                    <span>Ulangan</span>
+                                </div>
+                                <div class="orbit-container">
+                                    <div class="orbit-circle"></div>
+                                    <div class="orbit-dot dot-1"></div>
+                                    <div class="orbit-dot dot-2"></div>
+                                    <div class="orbit-dot dot-3"></div>
+                                    <div class="orbit-dot dot-4"></div>
+                                </div>
+                                <div class="center-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-wave">
+                    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                        <path d="M0,30 C360,120 720,0 1080,60 C1260,90 1380,80 1440,40 L1440,120 L0,120 Z" fill="#F8F9FF"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="features-section" data-aos="fade-up" data-aos-delay="100">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="section-tag">✨ Fitur Unggulan</span>
+                        <h2>Apa yang Bisa Kamu Lakukan?</h2>
+                        <p>Jelajahi berbagai fitur pembelajaran yang dirancang khusus untuk membuat belajar menjadi lebih seru dan interaktif.</p>
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card" data-page="materi" data-aos="flip-up" data-aos-delay="200">
+                            <div class="feature-icon" style="background: linear-gradient(135deg, #6C5CE7, #A29BFE);">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <h3>Pelajari Materi</h3>
+                            <p>Baca penjelasan seru dengan contoh yang mudah dipahami dan ilustrasi menarik.</p>
+                            <span class="feature-link">Mulai Belajar →</span>
+                        </div>
+                        <div class="feature-card" data-page="contoh" data-aos="flip-up" data-aos-delay="300">
+                            <div class="feature-icon" style="background: linear-gradient(135deg, #00CEC9, #81ECEC);">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h3>Lihat Contoh Soal</h3>
+                            <p>Pahami cara menjawab soal dengan pembahasan lengkap dan langkah penyelesaian.</p>
+                            <span class="feature-link">Lihat Contoh →</span>
+                        </div>
+                        <div class="feature-card" data-page="latihan" data-aos="flip-up" data-aos-delay="400">
+                            <div class="feature-icon" style="background: linear-gradient(135deg, #FDCB6E, #F39C12);">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h3>Kerjakan Latihan</h3>
+                            <p>Uji kemampuanmu dengan soal-soal interaktif dan dapatkan nilai langsung.</p>
+                            <span class="feature-link">Mulai Latihan →</span>
+                        </div>
+                        <div class="feature-card" data-page="ulangan" data-aos="flip-up" data-aos-delay="500">
+                            <div class="feature-icon" style="background: linear-gradient(135deg, #FD79A8, #E17055);">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <h3>Ikuti Ulangan Harian</h3>
+                            <p>Evaluasi belajarmu dengan ulangan harian yang seru dan dapatkan hasilnya.</p>
+                            <span class="feature-link">Ikuti Ulangan →</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section" data-aos="zoom-in" data-aos-delay="200">
+                <div class="container">
+                    <div class="cta-wrapper">
+                        <div class="cta-content">
+                            <h2>Siap Belajar dengan <span class="gradient-text">Seru</span>?</h2>
+                            <p>Mulai petualangan belajarmu sekarang dan rasakan pengalaman belajar yang menyenangkan!</p>
+                            <a href="#" class="btn btn-primary btn-large" data-page="materi">
+                                <i class="fas fa-play"></i> Mulai Sekarang
+                            </a>
+                        </div>
+                        <div class="cta-ornament">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MATERI -->
+        <section id="page-materi" class="page">
+            <div class="container">
+                <div class="page-header" data-aos="fade-up">
+                    <span class="section-tag">📚 Belajar</span>
+                    <h2>Materi Pelajaran</h2>
+                    <p>Pelajari materi dengan cara yang menyenangkan dan mudah dipahami</p>
+                </div>
+                <div class="materi-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="materi-header">
+                        <div>
+                            <h3>Pecahan Sederhana</h3>
+                            <span class="materi-level">⭐ Mudah</span>
+                        </div>
+                        <div class="materi-meta">
+                            <span><i class="fas fa-clock"></i> 15 menit</span>
+                            <span><i class="fas fa-users"></i> Kelas 4-5</span>
+                        </div>
+                    </div>
+                    <div class="materi-tujuan">
+                        <div class="tujuan-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <div>
+                            <h4>Tujuan Pembelajaran</h4>
+                            <p>Setelah belajar, kamu bisa mengenal pecahan, membaca pecahan, dan membandingkan pecahan sederhana.</p>
+                        </div>
+                    </div>
+                    <div class="materi-body">
+                        <div class="materi-intro">
+                            <h4>📖 Apa itu Pecahan?</h4>
+                            <p>Pecahan adalah bagian dari sesuatu yang utuh. Contoh: jika sebuah kue dipotong menjadi 4 bagian sama besar, maka 1 bagian disebut <strong>1/4</strong> (satu per empat).</p>
+                        </div>
+                        <div class="materi-ilustrasi">
+                            <div class="ilustrasi-content">
+                                <i class="fas fa-pizza-slice"></i>
+                                <div>
+                                    <span class="ilustrasi-title">🍕 1/4 Pizza</span>
+                                    <span class="ilustrasi-desc">1 bagian dari 4 bagian yang sama</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="materi-poin">
+                            <h4>✨ Poin Penting</h4>
+                            <ul>
+                                <li>Pecahan terdiri dari <strong>pembilang</strong> (angka atas) dan <strong>penyebut</strong> (angka bawah).</li>
+                                <li>Penyebut menunjukkan jumlah bagian yang sama.</li>
+                                <li>Pembilang menunjukkan jumlah bagian yang diambil.</li>
+                                <li>Contoh: 3/5 berarti 3 bagian dari 5 bagian yang sama.</li>
+                            </ul>
+                        </div>
+                        <div class="materi-kesimpulan">
+                            <h4>📌 Kesimpulan</h4>
+                            <p>Pecahan membantu kita menyatakan bagian dari keseluruhan. Dengan memahami pecahan, kita bisa membagi benda, menghitung, dan memecahkan masalah sehari-hari.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTOH SOAL -->
+        <section id="page-contoh" class="page">
+            <div class="container">
+                <div class="page-header" data-aos="fade-up">
+                    <span class="section-tag">📝 Contoh</span>
+                    <h2>Contoh Soal</h2>
+                    <p>Pelajari cara menjawab soal dengan pembahasan lengkap</p>
+                </div>
+                <div id="contoh-container"></div>
+            </div>
+        </section>
+
+        <!-- SOAL LATIHAN -->
+        <section id="page-latihan" class="page">
+            <div class="container">
+                <div class="page-header" data-aos="fade-up">
+                    <span class="section-tag">🎯 Latihan</span>
+                    <h2>Soal Latihan</h2>
+                    <p>Asah kemampuanmu dengan latihan soal interaktif</p>
+                </div>
+                <div id="latihan-container">
+                    <div id="latihan-start">
+                        <div class="quiz-welcome" data-aos="zoom-in">
+                            <div class="welcome-icon">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                            <h3>Siap Belajar?</h3>
+                            <p>Klik tombol di bawah untuk memulai latihan!</p>
+                            <button class="btn btn-primary btn-large" id="mulaiLatihanBtn">
+                                <i class="fas fa-play"></i> Mulai Latihan
+                            </button>
+                        </div>
+                    </div>
+                    <div id="latihan-quiz" style="display:none;">
+                        <div class="quiz-header">
+                            <div class="quiz-info">
+                                <span id="latihan-nomor">Soal 1 / 5</span>
+                            </div>
+                            <div class="quiz-progress">
+                                <div class="progress-track">
+                                    <div class="progress-fill" id="latihan-progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span id="latihan-progress">0%</span>
+                            </div>
+                        </div>
+                        <div id="latihan-soal"></div>
+                        <div id="latihan-pilihan"></div>
+                        <div class="quiz-nav">
+                            <button class="btn btn-secondary" id="latihan-nextBtn" disabled>
+                                <i class="fas fa-arrow-right"></i> Soal Berikutnya
+                            </button>
+                        </div>
+                    </div>
+                    <div id="latihan-hasil" style="display:none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ULANGAN HARIAN -->
+        <section id="page-ulangan" class="page">
+            <div class="container">
+                <div class="page-header" data-aos="fade-up">
+                    <span class="section-tag">📋 Evaluasi</span>
+                    <h2>Ulangan Harian</h2>
+                    <p>Evaluasi pemahamanmu dengan ulangan harian</p>
+                </div>
+                <div id="ulangan-container">
+                    <div id="ulangan-form">
+                        <div class="form-card" data-aos="fade-up" data-aos-delay="200">
+                            <div class="form-header">
+                                <i class="fas fa-user-graduate"></i>
+                                <h3>Data Diri</h3>
+                                <p>Isi data diri sebelum memulai ulangan</p>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Nama Siswa</label>
+                                <input type="text" id="ulangan-nama" placeholder="Masukkan nama kamu" />
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-school"></i> Kelas</label>
+                                <input type="text" id="ulangan-kelas" placeholder="Contoh: 4A" />
+                            </div>
+                            <button class="btn btn-primary btn-block" id="mulaiUlanganBtn">
+                                <i class="fas fa-play"></i> Mulai Ulangan
+                            </button>
+                        </div>
+                    </div>
+                    <div id="ulangan-quiz" style="display:none;">
+                        <div class="quiz-header">
+                            <div class="quiz-info">
+                                <span id="ulangan-nomor">Soal 1 / 5</span>
+                                <span id="ulangan-timer" style="display:none;">
+                                    <i class="fas fa-clock"></i> <span id="ulangan-timerDisplay">00:00</span>
+                                </span>
+                            </div>
+                            <div class="quiz-progress">
+                                <div class="progress-track">
+                                    <div class="progress-fill" id="ulangan-progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span id="ulangan-progress">0%</span>
+                            </div>
+                        </div>
+                        <div id="ulangan-soal"></div>
+                        <div id="ulangan-pilihan"></div>
+                        <div class="quiz-nav">
+                            <button class="btn btn-secondary" id="ulangan-nextBtn" disabled>
+                                <i class="fas fa-arrow-right"></i> Selanjutnya
+                            </button>
+                            <button class="btn btn-success" id="ulangan-selesaiBtn" style="display:none;">
+                                <i class="fas fa-check"></i> Selesai
+                            </button>
+                        </div>
+                    </div>
+                    <div id="ulangan-hasil" style="display:none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REKAP NILAI -->
+        <section id="page-rekap" class="page">
+            <div class="container">
+                <!-- FORM LOGIN -->
+                <div id="admin-login" class="login-container" data-aos="fade-up">
+                    <div class="login-card">
+                        <div class="login-header">
+                            <i class="fas fa-lock"></i>
+                            <h3>🔐 Akses Guru</h3>
+                            <p>Masukkan password untuk melihat rekap nilai siswa</p>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-key"></i> Password</label>
+                            <input type="password" id="adminPassword" placeholder="Masukkan password" />
+                        </div>
+                        <button class="btn btn-primary btn-block" id="loginAdminBtn">
+                            <i class="fas fa-sign-in-alt"></i> Masuk
+                        </button>
+                        <div id="loginError" style="display:none; color: #E17055; margin-top: 1rem; text-align: center; font-weight: 600;">
+                            ❌ Password salah! Silakan coba lagi.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DASHBOARD -->
+                <div id="admin-dashboard" style="display:none;">
+                    <div class="page-header" data-aos="fade-up">
+                        <span class="section-tag">📊 Admin</span>
+                        <h2>Rekap Nilai Ulangan</h2>
+                        <p>Data semua siswa yang telah mengerjakan ulangan</p>
+                        <div style="margin-top: 1rem;">
+                            <button class="btn btn-secondary" id="logoutAdminBtn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+                    <div id="rekap-container" class="rekap-container" data-aos="fade-up" data-aos-delay="200"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="page-about" class="page">
+            <div class="container">
+                <div class="page-header" data-aos="fade-up">
+                    <span class="section-tag">ℹ️ Informasi</span>
+                    <h2>Tentang Website</h2>
+                    <p>Informasi tentang platform pembelajaran ini</p>
+                </div>
+                <div class="about-grid">
+                    <div class="about-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="about-header">
+                            <div class="about-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div>
+                                <h3>Belajar Seru</h3>
+                                <p>Platform Pembelajaran Interaktif untuk SD</p>
+                            </div>
+                        </div>
+                        <div class="about-body">
+                            <p>Website pembelajaran ini dibuat khusus untuk siswa SD agar belajar menjadi menyenangkan dan mudah dipahami.</p>
+                            <div class="about-details">
+                                <div class="about-item">
+                                    <i class="fas fa-user-tie"></i>
+                                    <div>
+                                        <label>Guru / Pembuat</label>
+                                        <span id="about-guru">Bapak/Ibu Guru</span>
+                                    </div>
+                                </div>
+                                <div class="about-item">
+                                    <i class="fas fa-school"></i>
+                                    <div>
+                                        <label>Sekolah</label>
+                                        <span id="about-sekolah">SD Negeri 1</span>
+                                    </div>
+                                </div>
+                                <div class="about-item">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <div>
+                                        <label>Tahun</label>
+                                        <span id="about-tahun">2026</span>
+                                    </div>
+                                </div>
+                                <div class="about-item">
+                                    <i class="fas fa-bullseye"></i>
+                                    <div>
+                                        <label>Tujuan</label>
+                                        <span>Membantu siswa memahami materi melalui latihan dan ulangan interaktif.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Belajar<span>Seru</span></span>
+                    <p>Platform pembelajaran interaktif untuk siswa SD.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Menu</h4>
+                    <a href="#" data-page="home">Beranda</a>
+                    <a href="#" data-page="materi">Materi</a>
+                    <a href="#" data-page="latihan">Latihan</a>
+                    <a href="#" data-page="ulangan">Ulangan</a>
+                </div>
+                <div class="footer-social">
+                    <h4>Ikuti Kami</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Website Pembelajaran - Dibuat untuk mendukung pembelajaran siswa.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
