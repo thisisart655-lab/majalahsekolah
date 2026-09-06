@@ -10,11 +10,11 @@ const KONFIG = {
     tahun: '2026',
     timerAktif: true,
     batasLulus: 70,
-    adminPassword: 'akuganteng' // Password untuk login admin
+    adminPassword: 'akuganteng'
 };
 
 // ============================================================
-//  DATA SOAL – Guru dapat menambah/mengubah soal dengan mudah
+//  DATA SOAL
 // ============================================================
 
 const contohSoal = [
@@ -105,10 +105,15 @@ const soalUlangan = [
 ];
 
 // ============================================================
-//  END DATA – Jangan ubah di bawah ini kecuali Anda paham JS
+//  DATA REKAP - DISIMPAN DI VARIABEL (TANPA LOCALSTORAGE)
 // ============================================================
 
-// ===== ADMIN AUTHENTICATION =====
+let dataRekap = [];
+
+// ============================================================
+//  ADMIN AUTHENTICATION
+// ============================================================
+
 let isAdminLoggedIn = false;
 
 function showToast(message, type = 'success') {
@@ -242,42 +247,45 @@ document.querySelectorAll('[data-page]').forEach(el => {
     });
 });
 
-// ===== REKAP NILAI =====
-function getRekapNilai() {
-    try {
-        const data = localStorage.getItem('rekapUlangan');
-        return data ? JSON.parse(data) : [];
-    } catch {
-        return [];
-    }
-}
-
-function saveRekapNilai(rekap) {
-    localStorage.setItem('rekapUlangan', JSON.stringify(rekap));
-}
+// ============================================================
+//  REKAP NILAI - TANPA LOCALSTORAGE
+// ============================================================
 
 function addRekapNilai(data) {
-    const rekap = getRekapNilai();
-    const entry = {
-        id: Date.now(),
-        nama: data.nama,
-        kelas: data.kelas,
-        nilai: data.nilai,
-        benar: data.benar,
-        salah: data.salah,
-        total: data.total,
-        lulus: data.lulus,
-        timestamp: new Date().toISOString(),
-        detailJawaban: data.detailJawaban
-    };
-    rekap.push(entry);
-    saveRekapNilai(rekap);
-    return entry;
+    try {
+        console.log('Menambahkan data rekap:', data);
+        
+        // Buat entry baru dengan ID unik
+        const entry = {
+            id: Date.now() + Math.random() * 1000,
+            nama: data.nama || 'Tidak diketahui',
+            kelas: data.kelas || '-',
+            nilai: data.nilai || 0,
+            benar: data.benar || 0,
+            salah: data.salah || 0,
+            total: data.total || 0,
+            lulus: data.lulus || false,
+            timestamp: new Date().toISOString(),
+            detailJawaban: data.detailJawaban || []
+        };
+        
+        // Tambahkan ke array dataRekap
+        dataRekap.push(entry);
+        
+        console.log('Data rekap berhasil ditambahkan! Total:', dataRekap.length);
+        showToast('✅ Data ulangan berhasil disimpan!', 'success');
+        return entry;
+        
+    } catch (error) {
+        console.error('Error addRekapNilai:', error);
+        showToast('❌ Gagal menyimpan data!', 'error');
+        return null;
+    }
 }
 
 function clearRekapNilai() {
     if (confirm('Apakah Anda yakin ingin menghapus semua data rekap nilai?')) {
-        saveRekapNilai([]);
+        dataRekap = [];
         renderRekapNilai();
         showToast('🗑️ Semua data rekap nilai telah dihapus.', 'warning');
     }
@@ -300,20 +308,23 @@ function renderRekapNilai() {
 
     const container = document.getElementById('rekap-container');
     if (!container) return;
-    const rekap = getRekapNilai();
+    
+    console.log('Data rekap untuk ditampilkan:', dataRekap.length, 'item');
 
-    if (rekap.length === 0) {
+    if (dataRekap.length === 0) {
         container.innerHTML = `
             <div class="rekap-empty">
                 <i class="fas fa-inbox"></i>
                 <h3>Belum Ada Data</h3>
-                <p>Belum ada siswa yang mengerjakan ulangan.</p>
+                <p>Belum ada siswa yang mengerjakan ulangan. Data akan muncul setelah siswa menyelesaikan ulangan.</p>
             </div>
         `;
         return;
     }
 
-    rekap.sort((a, b) => b.id - a.id);
+    // Urutkan dari yang terbaru
+    const rekap = [...dataRekap].sort((a, b) => b.id - a.id);
+    
     let html = `
         <div class="rekap-header">
             <div class="rekap-header-left">
@@ -338,17 +349,17 @@ function renderRekapNilai() {
                     <div class="rekap-siswa">
                         <div class="rekap-avatar"><i class="fas fa-user"></i></div>
                         <div>
-                            <h4>${item.nama}</h4>
+                            <h4>${item.nama || 'Tidak diketahui'}</h4>
                             <span class="rekap-kelas">${item.kelas || '-'}</span>
                         </div>
                     </div>
-                    <div class="rekap-nilai ${item.lulus ? 'lulus' : 'tidak-lulus'}">${item.nilai}</div>
+                    <div class="rekap-nilai ${item.lulus ? 'lulus' : 'tidak-lulus'}">${item.nilai || 0}</div>
                 </div>
                 <div class="rekap-card-body">
                     <div class="rekap-stats">
-                        <span><i class="fas fa-check-circle" style="color: #00B894;"></i> ${item.benar} Benar</span>
-                        <span><i class="fas fa-times-circle" style="color: #E17055;"></i> ${item.salah} Salah</span>
-                        <span><i class="fas fa-question-circle" style="color: #FDCB6E;"></i> ${item.total} Soal</span>
+                        <span><i class="fas fa-check-circle" style="color: #00B894;"></i> ${item.benar || 0} Benar</span>
+                        <span><i class="fas fa-times-circle" style="color: #E17055;"></i> ${item.salah || 0} Salah</span>
+                        <span><i class="fas fa-question-circle" style="color: #FDCB6E;"></i> ${item.total || 0} Soal</span>
                     </div>
                     <div class="rekap-detail-jawaban">
                         <button class="btn btn-secondary btn-sm toggle-detail" data-id="${item.id}">
@@ -358,13 +369,13 @@ function renderRekapNilai() {
                             <table class="detail-table">
                                 <thead><tr><th>No</th><th>Soal</th><th>Jawaban Siswa</th><th>Jawaban Benar</th><th>Status</th></tr></thead>
                                 <tbody>
-                                    ${item.detailJawaban.map((d, i) => `
-                                        <tr class="${d.status.includes('Benar') ? 'row-benar' : 'row-salah'}">
+                                    ${(item.detailJawaban || []).map((d, i) => `
+                                        <tr class="${d.status && d.status.includes('Benar') ? 'row-benar' : 'row-salah'}">
                                             <td>${i + 1}</td>
-                                            <td>${d.soal}</td>
-                                            <td>${d.jawabanSiswa}</td>
-                                            <td>${d.jawabanBenar}</td>
-                                            <td>${d.status}</td>
+                                            <td>${d.soal || '-'}</td>
+                                            <td>${d.jawabanSiswa || '-'}</td>
+                                            <td>${d.jawabanBenar || '-'}</td>
+                                            <td>${d.status || '-'}</td>
                                         </tr>
                                     `).join('')}
                                 </tbody>
@@ -412,15 +423,15 @@ function exportRekapToExcel(rekapData) {
         rekapData.forEach((item, idx) => {
             const date = new Date(item.timestamp);
             rekapRows.push([
-                idx + 1, item.nama, item.kelas || '-', item.nilai,
-                item.benar, item.salah, item.total,
+                idx + 1, item.nama || '-', item.kelas || '-', item.nilai || 0,
+                item.benar || 0, item.salah || 0, item.total || 0,
                 item.lulus ? 'LULUS' : 'BELUM LULUS',
                 date.toLocaleDateString('id-ID'),
                 date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
             ]);
         });
         const totalSiswa = rekapData.length;
-        const rataRata = totalSiswa > 0 ? Math.round(rekapData.reduce((sum, d) => sum + d.nilai, 0) / totalSiswa) : 0;
+        const rataRata = totalSiswa > 0 ? Math.round(rekapData.reduce((sum, d) => sum + (d.nilai || 0), 0) / totalSiswa) : 0;
         const lulusCount = rekapData.filter(d => d.lulus).length;
         rekapRows.push([''], ['STATISTIK:'], ['Total Siswa', totalSiswa], ['Rata-rata Nilai', rataRata], ['Siswa Lulus', lulusCount], ['Siswa Tidak Lulus', totalSiswa - lulusCount]);
         rekapRows.push([''], ['Dibuat oleh: ' + KONFIG.guru], ['Sekolah: ' + KONFIG.sekolah], ['Tahun: ' + KONFIG.tahun]);
@@ -435,8 +446,8 @@ function exportRekapToExcel(rekapData) {
             ['No', 'Nama Siswa', 'Soal ke-', 'Soal', 'Jawaban Siswa', 'Jawaban Benar', 'Status']
         ];
         rekapData.forEach((item, idx) => {
-            item.detailJawaban.forEach((d, i) => {
-                detailRows.push([idx + 1, item.nama, i + 1, d.soal, d.jawabanSiswa, d.jawabanBenar, d.status]);
+            (item.detailJawaban || []).forEach((d, i) => {
+                detailRows.push([idx + 1, item.nama || '-', i + 1, d.soal || '-', d.jawabanSiswa || '-', d.jawabanBenar || '-', d.status || '-']);
             });
         });
         const ws2 = XLSX.utils.aoa_to_sheet(detailRows);
@@ -454,7 +465,10 @@ function exportRekapToExcel(rekapData) {
     }
 }
 
-// ===== RENDER CONTOH SOAL =====
+// ============================================================
+//  RENDER CONTOH SOAL
+// ============================================================
+
 function renderContohSoal() {
     const container = document.getElementById('contoh-container');
     if (!container) return;
@@ -490,7 +504,10 @@ function renderContohSoal() {
     if (typeof AOS !== 'undefined') setTimeout(() => AOS.refresh(), 200);
 }
 
-// ===== SOAL LATIHAN =====
+// ============================================================
+//  SOAL LATIHAN
+// ============================================================
+
 let latihanState = { current: 0, jawabanUser: [], soal: soalLatihan, selesai: false };
 
 function resetLatihan() {
@@ -584,8 +601,21 @@ function tampilkanHasilLatihan() {
     localStorage.setItem('nilaiLatihan', nilai);
 }
 
-// ===== ULANGAN HARIAN =====
-let ulanganState = { current: 0, jawabanUser: [], soal: soalUlangan, selesai: false, timer: null, detik: 0, nama: '', kelas: '', detailJawaban: [] };
+// ============================================================
+//  ULANGAN HARIAN
+// ============================================================
+
+let ulanganState = { 
+    current: 0, 
+    jawabanUser: [], 
+    soal: soalUlangan, 
+    selesai: false, 
+    timer: null, 
+    detik: 0, 
+    nama: '', 
+    kelas: '', 
+    detailJawaban: [] 
+};
 
 function resetUlangan() {
     document.getElementById('ulangan-form').style.display = 'block';
@@ -595,8 +625,10 @@ function resetUlangan() {
     ulanganState.jawabanUser = [];
     ulanganState.detailJawaban = [];
     ulanganState.selesai = false;
-    if (ulanganState.timer) { clearInterval(ulanganState.timer);
-        ulanganState.timer = null; }
+    if (ulanganState.timer) { 
+        clearInterval(ulanganState.timer);
+        ulanganState.timer = null; 
+    }
     ulanganState.detik = 0;
     document.getElementById('ulangan-timer').style.display = KONFIG.timerAktif ? 'inline' : 'none';
     document.getElementById('ulangan-nama').value = localStorage.getItem('namaSiswa') || '';
@@ -606,7 +638,10 @@ function resetUlangan() {
 document.getElementById('mulaiUlanganBtn')?.addEventListener('click', function() {
     const nama = document.getElementById('ulangan-nama').value.trim();
     const kelas = document.getElementById('ulangan-kelas').value.trim();
-    if (!nama || !kelas) { showToast('⚠️ Silakan isi nama dan kelas terlebih dahulu!', 'warning'); return; }
+    if (!nama || !kelas) { 
+        showToast('⚠️ Silakan isi nama dan kelas terlebih dahulu!', 'warning'); 
+        return; 
+    }
     ulanganState.nama = nama;
     ulanganState.kelas = kelas;
     localStorage.setItem('namaSiswa', nama);
@@ -677,24 +712,40 @@ function tampilSoalUlangan() {
 document.getElementById('ulangan-nextBtn')?.addEventListener('click', function() {
     const state = ulanganState;
     if (state.jawabanUser[state.current] === null) return;
-    if (state.current < state.soal.length - 1) { state.current++;
-        tampilSoalUlangan(); }
+    if (state.current < state.soal.length - 1) { 
+        state.current++;
+        tampilSoalUlangan(); 
+    }
 });
 
 document.getElementById('ulangan-selesaiBtn')?.addEventListener('click', function() {
-    if (confirm('Apakah kamu yakin ingin menyelesaikan ulangan?')) { selesaikanUlangan(); }
+    if (confirm('Apakah kamu yakin ingin menyelesaikan ulangan?')) { 
+        selesaikanUlangan(); 
+    }
 });
 
+// ===== FUNGSI UTAMA SELESAIKAN ULANGAN =====
 function selesaikanUlangan() {
+    console.log('=== MEMULAI PROSES SELESAIKAN ULANGAN ===');
+    
     const state = ulanganState;
-    if (state.timer) { clearInterval(state.timer);
-        state.timer = null; }
+    console.log('State ulangan:', state);
+    
+    // Hentikan timer
+    if (state.timer) { 
+        clearInterval(state.timer);
+        state.timer = null; 
+    }
+    
+    // Hitung nilai
     let benar = 0;
     const detailJawaban = [];
+    
     state.jawabanUser.forEach((jaw, idx) => {
         const soal = state.soal[idx];
         const isBenar = jaw === soal.jawaban;
         if (isBenar) benar++;
+        
         detailJawaban.push({
             soal: soal.pertanyaan,
             jawabanSiswa: jaw !== null ? soal.pilihan[jaw] : '(Tidak dijawab)',
@@ -702,45 +753,89 @@ function selesaikanUlangan() {
             status: isBenar ? '✅ Benar' : '❌ Salah'
         });
     });
+    
     const total = state.soal.length;
     const salah = total - benar;
     const nilai = Math.round((benar / total) * 100);
     const lulus = nilai >= KONFIG.batasLulus;
-    const rekapData = { nama: state.nama, kelas: state.kelas, nilai, benar, salah, total, lulus, detailJawaban };
-    addRekapNilai(rekapData);
+    
+    console.log('Hasil perhitungan:', { benar, salah, total, nilai, lulus });
+    
+    // Buat data rekap
+    const rekapData = {
+        nama: state.nama,
+        kelas: state.kelas,
+        nilai: nilai,
+        benar: benar,
+        salah: salah,
+        total: total,
+        lulus: lulus,
+        detailJawaban: detailJawaban
+    };
+    
+    console.log('Data rekap yang akan disimpan:', rekapData);
+    
+    // === SIMPAN KE REKAP (TANPA LOCALSTORAGE) ===
+    const result = addRekapNilai(rekapData);
+    console.log('Hasil penyimpanan:', result);
+    
+    // Tampilkan hasil ulangan
     document.getElementById('ulangan-quiz').style.display = 'none';
     const hasilEl = document.getElementById('ulangan-hasil');
     hasilEl.style.display = 'block';
-    const exportButtonHtml = isAdminLoggedIn ? `<button class="btn btn-success" id="exportExcelBtn"><i class="fas fa-file-excel"></i> Download Excel</button>` : '';
+    
+    // Cek apakah admin sudah login untuk menampilkan tombol export
+    const isAdmin = isAdminLoggedIn;
+    
+    const exportButtonHtml = isAdmin ? 
+        `<button class="btn btn-success" id="exportExcelBtn"><i class="fas fa-file-excel"></i> Download Excel</button>` : '';
+    
     hasilEl.innerHTML = `
         <div class="hasil-card">
             <h3>📋 Hasil Ulangan</h3>
             <p><strong>Nama:</strong> ${state.nama}</p>
             <p><strong>Kelas:</strong> ${state.kelas}</p>
             <div class="nilai-besar">${nilai}</div>
-            <div class="keterangan" style="color: ${lulus ? '#00B894' : '#E17055'}">${lulus ? '✅ Lulus' : '❌ Belum Lulus'}</div>
-            <div class="detail"><p>📝 Jumlah soal: ${total}</p><p>✅ Benar: ${benar}</p><p>❌ Salah: ${salah}</p><p>🎯 Batas lulus: ${KONFIG.batasLulus}</p></div>
+            <div class="keterangan" style="color: ${lulus ? '#00B894' : '#E17055'}">
+                ${lulus ? '✅ Lulus' : '❌ Belum Lulus'}
+            </div>
+            <div class="detail">
+                <p>📝 Jumlah soal: ${total}</p>
+                <p>✅ Benar: ${benar}</p>
+                <p>❌ Salah: ${salah}</p>
+                <p>🎯 Batas lulus: ${KONFIG.batasLulus}</p>
+            </div>
             <div class="hasil-actions">
                 ${exportButtonHtml}
                 <button class="btn btn-primary" id="ulanganUlangiBtn"><i class="fas fa-redo"></i> Ulangi Ulangan</button>
             </div>
-            <div class="rekap-link"><a href="#" data-page="rekap" class="btn btn-secondary"><i class="fas fa-chart-bar"></i> Lihat Rekap Nilai</a></div>
+            <div class="rekap-link">
+                <a href="#" data-page="rekap" class="btn btn-secondary"><i class="fas fa-chart-bar"></i> Lihat Rekap Nilai</a>
+            </div>
         </div>
     `;
-    if (isAdminLoggedIn) {
+    
+    // Event listener untuk tombol export (hanya untuk admin)
+    if (isAdmin) {
         document.getElementById('exportExcelBtn')?.addEventListener('click', function() {
             const success = exportRekapToExcel([rekapData]);
             if (success) {
                 this.innerHTML = '<i class="fas fa-check"></i> Berhasil Diunduh!';
-                setTimeout(() => { this.innerHTML = '<i class="fas fa-file-excel"></i> Download Excel'; }, 3000);
+                setTimeout(() => { 
+                    this.innerHTML = '<i class="fas fa-file-excel"></i> Download Excel'; 
+                }, 3000);
             }
         });
     }
+    
+    // Event listener untuk tombol ulangi
     document.getElementById('ulanganUlangiBtn')?.addEventListener('click', resetUlangan);
+    
+    // Event listener untuk link ke rekap
     document.querySelector('.rekap-link a')?.addEventListener('click', function(e) {
         e.preventDefault();
         if (!isAdminLoggedIn) {
-            showToast('🔒 Silakan login sebagai guru.', 'warning');
+            showToast('🔒 Silakan login sebagai guru untuk melihat rekap nilai.', 'warning');
             navigateTo('ulangan');
             setTimeout(() => {
                 const loginEl = document.getElementById('admin-login');
@@ -754,15 +849,22 @@ function selesaikanUlangan() {
             if (rekapEl) rekapEl.scrollIntoView({ behavior: 'smooth' });
         }, 300);
     });
+    
+    // Simpan nilai ke localStorage untuk sementara (opsional)
     localStorage.setItem('nilaiUlangan', nilai);
+    console.log('=== PROSES SELESAIKAN ULANGAN SELESAI ===');
 }
 
-// ===== ABOUT =====
+// ============================================================
+//  ABOUT
+// ============================================================
+
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('about-guru').textContent = KONFIG.guru;
     document.getElementById('about-sekolah').textContent = KONFIG.sekolah;
     document.getElementById('about-tahun').textContent = KONFIG.tahun;
 
+    // Login Admin
     document.getElementById('loginAdminBtn')?.addEventListener('click', function() {
         const password = document.getElementById('adminPassword').value;
         loginAdmin(password);
@@ -775,11 +877,15 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         logoutAdmin();
     });
+    
     checkAdminStatus();
     if (document.getElementById('page-contoh')?.classList.contains('active-page')) renderContohSoal();
 });
 
-// ===== INISIALISASI =====
+// ============================================================
+//  INISIALISASI
+// ============================================================
+
 AOS.init({ duration: 800, once: false, offset: 100, easing: 'ease-in-out' });
 
 (function() {
@@ -799,13 +905,20 @@ document.querySelectorAll('.stat-number').forEach(counter => {
     const step = target / 125;
     const update = () => {
         current += step;
-        if (current >= target) { counter.textContent = target + (target > 50 ? '+' : ''); return; }
+        if (current >= target) { 
+            counter.textContent = target + (target > 50 ? '+' : ''); 
+            return; 
+        }
         counter.textContent = Math.floor(current);
         requestAnimationFrame(update);
     };
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => { if (entry.isIntersecting) { update();
-                observer.disconnect(); } });
+        entries.forEach(entry => { 
+            if (entry.isIntersecting) { 
+                update();
+                observer.disconnect(); 
+            } 
+        });
     });
     observer.observe(counter);
 });
