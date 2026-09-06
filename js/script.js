@@ -14,6 +14,13 @@ const KONFIG = {
 };
 
 // ============================================================
+//  DATA REKAP - DISIMPAN DI VARIABEL GLOBAL
+// ============================================================
+
+// INI ADALAH TEMPAT PENYIMPANAN DATA REKAP
+let dataRekap = [];
+
+// ============================================================
 //  DATA SOAL
 // ============================================================
 
@@ -103,12 +110,6 @@ const soalUlangan = [
         pembahasan: '4/8 dibagi 4 = 1/2.'
     }
 ];
-
-// ============================================================
-//  DATA REKAP - DISIMPAN DI VARIABEL (TANPA LOCALSTORAGE)
-// ============================================================
-
-let dataRekap = [];
 
 // ============================================================
 //  ADMIN AUTHENTICATION
@@ -251,39 +252,36 @@ document.querySelectorAll('[data-page]').forEach(el => {
 //  REKAP NILAI - TANPA LOCALSTORAGE
 // ============================================================
 
-function addRekapNilai(data) {
-    try {
-        console.log('Menambahkan data rekap:', data);
-        
-        // Buat entry baru dengan ID unik
-        const entry = {
-            id: Date.now() + Math.random() * 1000,
-            nama: data.nama || 'Tidak diketahui',
-            kelas: data.kelas || '-',
-            nilai: data.nilai || 0,
-            benar: data.benar || 0,
-            salah: data.salah || 0,
-            total: data.total || 0,
-            lulus: data.lulus || false,
-            timestamp: new Date().toISOString(),
-            detailJawaban: data.detailJawaban || []
-        };
-        
-        // Tambahkan ke array dataRekap
-        dataRekap.push(entry);
-        
-        console.log('Data rekap berhasil ditambahkan! Total:', dataRekap.length);
-        showToast('✅ Data ulangan berhasil disimpan!', 'success');
-        return entry;
-        
-    } catch (error) {
-        console.error('Error addRekapNilai:', error);
-        showToast('❌ Gagal menyimpan data!', 'error');
-        return null;
-    }
+function tambahRekap(data) {
+    console.log('📝 Menambahkan data rekap...');
+    console.log('Data:', data);
+    
+    // Buat entry baru
+    const entry = {
+        id: Date.now() + Math.random() * 1000,
+        nama: data.nama || 'Tidak diketahui',
+        kelas: data.kelas || '-',
+        nilai: data.nilai || 0,
+        benar: data.benar || 0,
+        salah: data.salah || 0,
+        total: data.total || 0,
+        lulus: data.lulus || false,
+        timestamp: new Date().toISOString(),
+        detailJawaban: data.detailJawaban || []
+    };
+    
+    // Tambahkan ke array
+    dataRekap.push(entry);
+    
+    console.log('✅ Data rekap berhasil ditambahkan!');
+    console.log('Total data:', dataRekap.length);
+    console.log('Data terbaru:', dataRekap);
+    
+    showToast('✅ Data ulangan berhasil disimpan!', 'success');
+    return entry;
 }
 
-function clearRekapNilai() {
+function hapusSemuaRekap() {
     if (confirm('Apakah Anda yakin ingin menghapus semua data rekap nilai?')) {
         dataRekap = [];
         renderRekapNilai();
@@ -292,6 +290,10 @@ function clearRekapNilai() {
 }
 
 function renderRekapNilai() {
+    console.log('📊 Merender rekap nilai...');
+    console.log('Data rekap saat ini:', dataRekap);
+    
+    // Cek apakah admin sudah login
     if (!isAdminLoggedIn) {
         const container = document.getElementById('rekap-container');
         if (container) {
@@ -307,10 +309,12 @@ function renderRekapNilai() {
     }
 
     const container = document.getElementById('rekap-container');
-    if (!container) return;
-    
-    console.log('Data rekap untuk ditampilkan:', dataRekap.length, 'item');
+    if (!container) {
+        console.error('❌ Element rekap-container tidak ditemukan!');
+        return;
+    }
 
+    // Jika belum ada data
     if (dataRekap.length === 0) {
         container.innerHTML = `
             <div class="rekap-empty">
@@ -319,11 +323,13 @@ function renderRekapNilai() {
                 <p>Belum ada siswa yang mengerjakan ulangan. Data akan muncul setelah siswa menyelesaikan ulangan.</p>
             </div>
         `;
+        console.log('📭 Belum ada data rekap');
         return;
     }
 
     // Urutkan dari yang terbaru
     const rekap = [...dataRekap].sort((a, b) => b.id - a.id);
+    console.log('📋 Data rekap yang akan ditampilkan:', rekap.length, 'item');
     
     let html = `
         <div class="rekap-header">
@@ -343,6 +349,7 @@ function renderRekapNilai() {
         const date = new Date(item.timestamp);
         const dateStr = date.toLocaleDateString('id-ID');
         const timeStr = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        
         html += `
             <div class="rekap-card" data-aos="fade-up" data-aos-delay="${index * 50}">
                 <div class="rekap-card-header">
@@ -390,7 +397,9 @@ function renderRekapNilai() {
 
     html += `</div>`;
     container.innerHTML = html;
+    console.log('✅ Rekap nilai berhasil ditampilkan!');
 
+    // Event untuk toggle detail jawaban
     document.querySelectorAll('.toggle-detail').forEach(btn => {
         btn.addEventListener('click', function() {
             const id = this.dataset.id;
@@ -404,9 +413,12 @@ function renderRekapNilai() {
         });
     });
 
+    // Event untuk tombol export dan hapus
     if (isAdminLoggedIn) {
-        document.getElementById('exportRekapExcelBtn')?.addEventListener('click', function() { exportRekapToExcel(rekap); });
-        document.getElementById('clearRekapBtn')?.addEventListener('click', clearRekapNilai);
+        document.getElementById('exportRekapExcelBtn')?.addEventListener('click', function() { 
+            exportRekapToExcel(rekap); 
+        });
+        document.getElementById('clearRekapBtn')?.addEventListener('click', hapusSemuaRekap);
     }
 
     if (typeof AOS !== 'undefined') AOS.refresh();
@@ -415,6 +427,8 @@ function renderRekapNilai() {
 function exportRekapToExcel(rekapData) {
     try {
         const wb = XLSX.utils.book_new();
+        
+        // Sheet 1: Rekap Nilai
         const rekapRows = [
             ['REKAP NILAI ULANGAN HARIAN'],
             [''],
@@ -423,13 +437,20 @@ function exportRekapToExcel(rekapData) {
         rekapData.forEach((item, idx) => {
             const date = new Date(item.timestamp);
             rekapRows.push([
-                idx + 1, item.nama || '-', item.kelas || '-', item.nilai || 0,
-                item.benar || 0, item.salah || 0, item.total || 0,
+                idx + 1, 
+                item.nama || '-', 
+                item.kelas || '-', 
+                item.nilai || 0,
+                item.benar || 0, 
+                item.salah || 0, 
+                item.total || 0,
                 item.lulus ? 'LULUS' : 'BELUM LULUS',
                 date.toLocaleDateString('id-ID'),
                 date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
             ]);
         });
+        
+        // Statistik
         const totalSiswa = rekapData.length;
         const rataRata = totalSiswa > 0 ? Math.round(rekapData.reduce((sum, d) => sum + (d.nilai || 0), 0) / totalSiswa) : 0;
         const lulusCount = rekapData.filter(d => d.lulus).length;
@@ -440,6 +461,7 @@ function exportRekapToExcel(rekapData) {
         ws1['!cols'] = [{ wch: 6 }, { wch: 20 }, { wch: 10 }, { wch: 8 }, { wch: 8 }, { wch: 8 }, { wch: 12 }, { wch: 14 }, { wch: 14 }, { wch: 10 }];
         XLSX.utils.book_append_sheet(wb, ws1, 'Rekap Nilai');
 
+        // Sheet 2: Detail Jawaban
         const detailRows = [
             ['DETAIL JAWABAN PER SISWA'],
             [''],
@@ -454,6 +476,7 @@ function exportRekapToExcel(rekapData) {
         ws2['!cols'] = [{ wch: 6 }, { wch: 20 }, { wch: 10 }, { wch: 50 }, { wch: 25 }, { wch: 25 }, { wch: 15 }];
         XLSX.utils.book_append_sheet(wb, ws2, 'Detail Jawaban');
 
+        // Simpan file
         const fileName = `Rekap_Ulangan_${new Date().toISOString().slice(0,10)}.xlsx`;
         XLSX.writeFile(wb, fileName);
         showToast('✅ Data berhasil diexport ke Excel!', 'success');
@@ -598,7 +621,6 @@ function tampilkanHasilLatihan() {
         </div>
     `;
     document.getElementById('latihanUlangiBtn')?.addEventListener('click', resetLatihan);
-    localStorage.setItem('nilaiLatihan', nilai);
 }
 
 // ============================================================
@@ -729,7 +751,6 @@ function selesaikanUlangan() {
     console.log('=== MEMULAI PROSES SELESAIKAN ULANGAN ===');
     
     const state = ulanganState;
-    console.log('State ulangan:', state);
     
     // Hentikan timer
     if (state.timer) { 
@@ -759,7 +780,7 @@ function selesaikanUlangan() {
     const nilai = Math.round((benar / total) * 100);
     const lulus = nilai >= KONFIG.batasLulus;
     
-    console.log('Hasil perhitungan:', { benar, salah, total, nilai, lulus });
+    console.log('Hasil perhitungan:', { nama: state.nama, benar, salah, total, nilai, lulus });
     
     // Buat data rekap
     const rekapData = {
@@ -773,10 +794,8 @@ function selesaikanUlangan() {
         detailJawaban: detailJawaban
     };
     
-    console.log('Data rekap yang akan disimpan:', rekapData);
-    
-    // === SIMPAN KE REKAP (TANPA LOCALSTORAGE) ===
-    const result = addRekapNilai(rekapData);
+    // === SIMPAN KE REKAP ===
+    const result = tambahRekap(rekapData);
     console.log('Hasil penyimpanan:', result);
     
     // Tampilkan hasil ulangan
@@ -784,7 +803,7 @@ function selesaikanUlangan() {
     const hasilEl = document.getElementById('ulangan-hasil');
     hasilEl.style.display = 'block';
     
-    // Cek apakah admin sudah login untuk menampilkan tombol export
+    // Cek apakah admin sudah login
     const isAdmin = isAdminLoggedIn;
     
     const exportButtonHtml = isAdmin ? 
@@ -844,14 +863,14 @@ function selesaikanUlangan() {
             return;
         }
         navigateTo('rekap');
+        // Refresh rekap setelah navigasi
         setTimeout(() => {
+            renderRekapNilai();
             const rekapEl = document.getElementById('rekap-container');
             if (rekapEl) rekapEl.scrollIntoView({ behavior: 'smooth' });
         }, 300);
     });
     
-    // Simpan nilai ke localStorage untuk sementara (opsional)
-    localStorage.setItem('nilaiUlangan', nilai);
     console.log('=== PROSES SELESAIKAN ULANGAN SELESAI ===');
 }
 
@@ -860,6 +879,9 @@ function selesaikanUlangan() {
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Website dimuat!');
+    
+    // Set data about
     document.getElementById('about-guru').textContent = KONFIG.guru;
     document.getElementById('about-sekolah').textContent = KONFIG.sekolah;
     document.getElementById('about-tahun').textContent = KONFIG.tahun;
@@ -878,8 +900,16 @@ document.addEventListener('DOMContentLoaded', function() {
         logoutAdmin();
     });
     
+    // Cek status admin
     checkAdminStatus();
-    if (document.getElementById('page-contoh')?.classList.contains('active-page')) renderContohSoal();
+    
+    // Render contoh soal jika aktif
+    if (document.getElementById('page-contoh')?.classList.contains('active-page')) {
+        renderContohSoal();
+    }
+    
+    // Debug: tampilkan data rekap di console
+    console.log('📊 Data rekap awal:', dataRekap);
 });
 
 // ============================================================
@@ -888,8 +918,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 AOS.init({ duration: 800, once: false, offset: 100, easing: 'ease-in-out' });
 
+// Particles
 (function() {
     const container = document.getElementById('particles-container');
+    if (!container) return;
     for (let i = 0; i < 50; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
@@ -899,6 +931,7 @@ AOS.init({ duration: 800, once: false, offset: 100, easing: 'ease-in-out' });
     }
 })();
 
+// Counter animation
 document.querySelectorAll('.stat-number').forEach(counter => {
     const target = parseInt(counter.dataset.count);
     let current = 0;
