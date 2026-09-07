@@ -1,0 +1,111 @@
+{
+  "header": {
+    "siteTitle": "Belajar Yook",
+    "heroTitle": "Selamat datang di website kelas 6b",
+    "heroSubtitle": "Mari kita belajar dengan sungguh-sungguh"
+  },
+  "materi": [
+    {
+      "id": "m1",
+      "judul": "Pendidikan Pancasila",
+      "deskripsi": "Mata pelajaran ini mencakup kelima sila Pancasila, mulai dari Ketuhanan Yang Maha Esa, Kemanusiaan yang Adil dan Beradab, Persatuan Indonesia, Kerakyatan yang Dipimpin oleh Hikmat Kebijaksanaan dalam Permusyawaratan Perwakilan, hingga Keadilan Sosial bagi Seluruh Rakyat Indonesia.",
+      "sub": [],
+      "image": "https://static.sc.cloudapp.web.id/cover/btp/Pendidikan_Pancasila_untuk_Siswa_Kelas_6_Media_Karya_Putra.png"
+    },
+    {
+      "id": "m2",
+      "judul": "matematika",
+      "deskripsi": "pelajaran berhitung",
+      "sub": [],
+      "image": ""
+    },
+    {
+      "id": "m3",
+      "judul": "Bahasa Indonesia",
+      "deskripsi": "Belajar bahasa indonesia",
+      "sub": [],
+      "image": ""
+    },
+    {
+      "id": "m1788793986574",
+      "judul": "ipas",
+      "deskripsi": "Deskripsi",
+      "image": "",
+      "sub": []
+    },
+    {
+      "id": "m1788793993010",
+      "judul": "seni rupa",
+      "deskripsi": "Deskripsi",
+      "image": "",
+      "sub": []
+    }
+  ],
+  "latihan": [
+    {
+      "id": "l1",
+      "judul": "latihan matematika",
+      "deskripsi": "latihan tambah",
+      "sub": [
+        "Buat heading",
+        "Tambahkan paragraf",
+        "Sisipkan link"
+      ],
+      "questions": [
+        {
+          "question": "berapa 1 + 1 =",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "1+2=",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "answer": 2
+        },
+        {
+          "question": "berapakah desimal dari 1/2 ....",
+          "image": "",
+          "options": [
+            "0,25",
+            "0,35",
+            "0,45",
+            "0,50"
+          ],
+          "answer": 3
+        }
+      ]
+    },
+    {
+      "id": "l2",
+      "judul": "Latihan CSS Flexbox",
+      "deskripsi": "Susun elemen dengan flexbox.",
+      "sub": [
+        "Flex container",
+        "Justify & Align",
+        "Ordering"
+      ]
+    },
+    {
+      "id": "l3",
+      "judul": "Latihan JavaScript",
+      "deskripsi": "Fungsi dan manipulasi array.",
+      "sub": [
+        "Buat fungsi",
+        "Looping array",
+        "Filter data"
+      ]
+    }
+  ],
+  "exportedAt": "2026-09-07T18:26:41.777Z",
+  "version": "1.0"
+}
