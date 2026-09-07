@@ -1,0 +1,2299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduLearn · LMS Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 30px;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+        }
+
+        .logo small {
+            font-size: 0.7rem;
+            -webkit-text-fill-color: rgba(255, 255, 255, 0.4);
+            background: none;
+            margin-left: 5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a,
+        .nav-links span {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links a.active {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        .admin-toggle {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff !important;
+            padding: 8px 22px !important;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            font-weight: 600 !important;
+        }
+
+        .admin-toggle:hover {
+            background: rgba(255, 255, 255, 0.18);
+            transform: scale(1.02);
+        }
+
+        .page-container {
+            position: relative;
+            min-height: 70vh;
+        }
+
+        .page {
+            display: none;
+            animation: fadeSlide 0.5s ease forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-page {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .hero-page h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f093fb, #f5576c, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .hero-page .hero-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .hero-stats .stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .hero-stats .stat .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .hero-stats .stat .label {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            border-left: 4px solid #f5576c;
+            padding-left: 15px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .card .card-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .card .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .card .card-meta .badge {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 3px 14px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .card .card-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .sub-page-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(30px);
+            z-index: 1000;
+            padding: 40px 20px;
+            overflow-y: auto;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .sub-page-overlay.active {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .sub-page-content {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 40px;
+            padding: 40px 45px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            animation: slideUp 0.5s ease;
+            position: relative;
+            margin: auto;
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .sub-page-content .close-sub {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sub-page-content .close-sub:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: rotate(90deg);
+        }
+
+        .sub-page-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sub-page-content .sub-desc {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            -webkit-text-fill-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .sub-page-content .sub-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .sub-page-content .sub-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sub-page-content .sub-list li {
+            padding: 14px 20px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border-left: 3px solid #f5576c;
+            color: rgba(255, 255, 255, 0.85);
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .sub-page-content .sub-list li:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateX(5px);
+        }
+
+        .sub-page-content .sub-list li::before {
+            content: '▸ ';
+            color: #f5576c;
+        }
+
+        .quiz-container {
+            margin-top: 20px;
+        }
+
+        .quiz-question {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .quiz-question .question-text {
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quiz-question .question-text .q-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .quiz-question .question-text .q-actions .btn {
+            padding: 4px 12px;
+            font-size: 0.7rem;
+        }
+
+        .quiz-question .question-image {
+            width: 100%;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            margin-bottom: 6px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .quiz-option input[type="radio"] {
+            accent-color: #f5576c;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            flex: 1;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .quiz-option.correct {
+            background: rgba(0, 255, 100, 0.08);
+            border-color: rgba(0, 255, 100, 0.2);
+        }
+
+        .quiz-option.wrong {
+            background: rgba(255, 50, 50, 0.08);
+            border-color: rgba(255, 50, 50, 0.2);
+        }
+
+        .quiz-result {
+            padding: 15px 20px;
+            border-radius: 16px;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .quiz-result.pass {
+            background: rgba(0, 255, 100, 0.08);
+            border: 1px solid rgba(0, 255, 100, 0.15);
+            color: #4caf50;
+        }
+
+        .quiz-result.fail {
+            background: rgba(255, 50, 50, 0.08);
+            border: 1px solid rgba(255, 50, 50, 0.15);
+            color: #ff6b6b;
+        }
+
+        .admin-dashboard {
+            display: none;
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            animation: fadeSlide 0.5s ease;
+        }
+
+        .admin-dashboard.active {
+            display: block;
+        }
+
+        .admin-dashboard h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .admin-login-area {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+        }
+
+        .admin-login-area input {
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .admin-login-area input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .admin-login-area input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .btn {
+            padding: 10px 28px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .btn:hover {
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border-color: transparent;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 30px rgba(245, 87, 108, 0.3);
+        }
+
+        .btn-danger {
+            background: rgba(255, 50, 50, 0.2);
+            border-color: rgba(255, 50, 50, 0.2);
+            color: #ff6b6b;
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 50, 50, 0.3);
+        }
+
+        .btn-success {
+            background: rgba(0, 200, 100, 0.2);
+            border-color: rgba(0, 200, 100, 0.2);
+            color: #4caf50;
+        }
+
+        .btn-success:hover {
+            background: rgba(0, 200, 100, 0.3);
+        }
+
+        .admin-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 15px 0 20px;
+        }
+
+        .admin-controls input,
+        .admin-controls textarea {
+            flex: 1;
+            min-width: 160px;
+            padding: 10px 18px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .admin-controls textarea {
+            min-width: 250px;
+            border-radius: 16px;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .admin-controls input::placeholder,
+        .admin-controls textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .admin-controls input:focus,
+        .admin-controls textarea:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .admin-item {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            margin-bottom: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s;
+        }
+
+        .admin-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .admin-item .item-title {
+            font-weight: 500;
+            min-width: 120px;
+            flex: 1;
+        }
+
+        .admin-item .item-desc {
+            color: rgba(255, 255, 255, 0.5);
+            flex: 2;
+            min-width: 120px;
+            font-size: 0.85rem;
+        }
+
+        .admin-item .item-type {
+            font-size: 0.7rem;
+            padding: 2px 12px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .admin-item .btn-group {
+            display: flex;
+            gap: 5px;
+            margin-left: auto;
+        }
+
+        .admin-item .btn-group .btn {
+            padding: 4px 14px;
+            font-size: 0.75rem;
+        }
+
+        .admin-message {
+            padding: 10px 0;
+            color: rgba(255, 255, 255, 0.7);
+            min-height: 40px;
+        }
+
+        .login-message {
+            color: rgba(255, 200, 200, 0.7);
+            min-height: 30px;
+        }
+
+        .edit-header-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 10px 0 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .edit-header-area input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 18px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .edit-header-area input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .edit-header-area input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .materi-editor {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 15px;
+        }
+
+        .materi-editor .form-group {
+            margin-bottom: 18px;
+        }
+
+        .materi-editor label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .materi-editor input[type="text"],
+        .materi-editor textarea {
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .materi-editor input[type="text"]:focus,
+        .materi-editor textarea:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .materi-editor textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .materi-editor .image-upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .materi-editor .image-upload-area:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .materi-editor .image-upload-area .icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .materi-editor .image-upload-area p {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
+        }
+
+        .materi-editor .image-upload-area .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .materi-editor .image-upload-area .image-preview.show {
+            display: block;
+        }
+
+        .materi-editor .image-upload-area input[type="file"] {
+            display: none;
+        }
+
+        .materi-editor .sub-items-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            min-height: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .materi-editor .sub-item-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 6px 14px 6px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .materi-editor .sub-item-tag .remove {
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 700;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        .materi-editor .sub-item-tag .remove:hover {
+            color: #ff6b6b;
+            transform: scale(1.2);
+        }
+
+        .materi-editor .add-sub-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .materi-editor .add-sub-row input {
+            flex: 1;
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .materi-editor .add-sub-row input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .materi-editor .add-sub-row input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .materi-editor .btn-group-editor {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .materi-editor .btn-group-editor .btn {
+            padding: 12px 32px;
+        }
+
+        .question-editor {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 15px;
+        }
+
+        .question-editor .form-group {
+            margin-bottom: 18px;
+        }
+
+        .question-editor label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .question-editor input[type="text"],
+        .question-editor textarea {
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .question-editor input[type="text"]:focus,
+        .question-editor textarea:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .question-editor .image-upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .question-editor .image-upload-area:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .question-editor .image-upload-area .icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .question-editor .image-upload-area p {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
+        }
+
+        .question-editor .image-upload-area .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .question-editor .image-upload-area .image-preview.show {
+            display: block;
+        }
+
+        .question-editor .image-upload-area input[type="file"] {
+            display: none;
+        }
+
+        .question-editor .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .question-editor .option-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .question-editor .option-row .opt-label {
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.4);
+            min-width: 30px;
+        }
+
+        .question-editor .option-row input {
+            flex: 1;
+            padding: 8px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .question-editor .option-row input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .question-editor .option-row .remove-opt {
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 700;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            padding: 0 5px;
+        }
+
+        .question-editor .option-row .remove-opt:hover {
+            color: #ff6b6b;
+            transform: scale(1.2);
+        }
+
+        .question-editor .add-option-btn {
+            margin-top: 5px;
+        }
+
+        .question-editor .btn-group-editor {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .question-editor .btn-group-editor .btn {
+            padding: 12px 32px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 18px;
+                top: 10px;
+            }
+            .logo {
+                font-size: 1.4rem;
+            }
+            .nav-links {
+                gap: 4px;
+            }
+            .nav-links a,
+            .nav-links span {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+            .hero-page h1 {
+                font-size: 2.2rem;
+            }
+            .sub-page-content {
+                padding: 30px 20px;
+            }
+            .sub-page-content h2 {
+                font-size: 1.6rem;
+            }
+            .admin-dashboard {
+                padding: 20px;
+            }
+            .admin-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .admin-item .btn-group {
+                margin-left: 0;
+                justify-content: flex-end;
+            }
+            .hero-stats {
+                gap: 15px;
+            }
+            .hero-stats .stat {
+                padding: 10px 20px;
+            }
+            .quiz-question .question-text {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .materi-editor,
+            .question-editor {
+                padding: 15px;
+            }
+            .question-editor .option-row {
+                flex-wrap: wrap;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+
+    <nav class="navbar">
+        <div class="logo" id="siteLogo">EduLearn <small>LMS</small></div>
+        <div class="nav-links">
+            <a class="active" data-page="beranda">Beranda</a>
+            <a data-page="materi">Materi</a>
+            <a data-page="latihan">Latihan</a>
+            <a data-page="tentang">Tentang</a>
+            <span class="admin-toggle" id="adminToggle">🔐 Admin</span>
+        </div>
+    </nav>
+
+    <div class="page-container">
+
+        <div class="page active" id="page-beranda">
+            <div class="hero-page">
+                <h1 id="heroTitle">Mulai Belajar Sekarang</h1>
+                <p class="hero-subtitle" id="heroSubtitle">Platform pembelajaran modern dengan konten dinamis yang dapat dikelola oleh admin. Jelajahi materi dan latihan yang tersedia.</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="number" id="totalMateri">0</div>
+                        <div class="label">Materi</div>
+                    </div>
+                    <div class="stat">
+                        <div class="number" id="totalLatihan">0</div>
+                        <div class="label">Latihan</div>
+                    </div>
+                    <div class="stat">
+                        <div class="number" id="totalSub">0</div>
+                        <div class="label">Sub Konten</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-materi">
+            <div class="section-header">
+                <h2>📚 Materi Pembelajaran</h2>
+                <span style="color:rgba(255,255,255,0.3); font-size:0.9rem;" id="materiCount">0 materi</span>
+            </div>
+            <div id="materiContainer" class="grid-container"></div>
+        </div>
+
+        <div class="page" id="page-latihan">
+            <div class="section-header">
+                <h2>✍️ Latihan Pembelajaran</h2>
+                <span style="color:rgba(255,255,255,0.3); font-size:0.9rem;" id="latihanCount">0 latihan</span>
+            </div>
+            <div id="latihanContainer" class="grid-container"></div>
+        </div>
+
+        <div class="page" id="page-tentang">
+            <div class="hero-page" style="padding:40px 20px;">
+                <h2 style="font-size:2.5rem; -webkit-text-fill-color:#fff; background:none;">Tentang EduLearn</h2>
+                <p style="max-width:700px; margin:20px auto; color:rgba(255,255,255,0.6);">
+                    EduLearn adalah platform pembelajaran modern dengan sistem manajemen konten lengkap.
+                    Admin dapat mengelola materi (dengan teks & gambar), latihan (pilihan ganda dengan gambar), serta
+                    mengubah header dan judul website.
+                </p>
+                <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap; margin-top:20px;">
+                    <span style="background:rgba(255,255,255,0.04); padding:8px 20px; border-radius:30px; border:1px solid rgba(255,255,255,0.06);">⚡ Responsif</span>
+                    <span style="background:rgba(255,255,255,0.04); padding:8px 20px; border-radius:30px; border:1px solid rgba(255,255,255,0.06);">🎨 Glassmorphism</span>
+                    <span style="background:rgba(255,255,255,0.04); padding:8px 20px; border-radius:30px; border:1px solid rgba(255,255,255,0.06);">📱 Mobile Friendly</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-dashboard" id="adminDashboard">
+        <h2>⚙️ Kelola Konten</h2>
+        <div id="adminLoginArea" class="admin-login-area">
+            <input type="password" id="adminPassword" placeholder="Masukkan password admin">
+            <button class="btn btn-primary" id="loginAdminBtn" style="align-self:flex-start;">Masuk</button>
+            <div class="login-message" id="loginMessage"></div>
+        </div>
+
+        <div id="adminContentArea" style="display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
+                <span style="color:rgba(255,255,255,0.5); font-weight:500;">Mode Admin Aktif</span>
+                <button class="btn" id="logoutAdminBtn">Keluar</button>
+            </div>
+
+            <div style="color:rgba(255,255,255,0.7); font-weight:600; margin-top:5px;">✏️ Edit Header & Judul</div>
+            <div class="edit-header-area">
+                <input type="text" id="editSiteTitle" placeholder="Judul Website">
+                <input type="text" id="editHeroTitle" placeholder="Hero Title">
+                <input type="text" id="editHeroSubtitle" placeholder="Hero Subtitle">
+                <button class="btn btn-primary" id="saveHeaderBtn">Simpan Header</button>
+            </div>
+
+            <div style="color:rgba(255,255,255,0.7); font-weight:600; margin-top:15px;">📚 Tambah Materi</div>
+            <div class="admin-controls">
+                <input type="text" id="newMateriJudul" placeholder="Judul materi">
+                <input type="text" id="newMateriDeskripsi" placeholder="Deskripsi">
+                <input type="text" id="newMateriImage" placeholder="URL Gambar">
+                <textarea id="newMateriSub" placeholder="Sub materi (pisahkan koma)"></textarea>
+                <button class="btn btn-primary" id="tambahMateriBtn">+ Tambah</button>
+            </div>
+
+            <div style="color:rgba(255,255,255,0.7); font-weight:600; margin-top:15px;">✍️ Tambah Latihan</div>
+            <div class="admin-controls">
+                <input type="text" id="newLatihanJudul" placeholder="Judul latihan">
+                <input type="text" id="newLatihanDeskripsi" placeholder="Deskripsi">
+                <button class="btn btn-primary" id="tambahLatihanBtn">+ Tambah Latihan</button>
+            </div>
+            <div style="color:rgba(255,255,255,0.3); font-size:0.8rem; margin-top:-5px; margin-bottom:10px;">
+                * Klik latihan untuk mengatur soal pilihan ganda
+            </div>
+
+            <div style="margin-top: 20px;">
+                <div style="color:rgba(255,255,255,0.3); font-weight:500; margin-bottom:10px;">Daftar Semua Konten</div>
+                <div id="adminListContainer"></div>
+            </div>
+            <div class="admin-message" id="adminMessage"></div>
+        </div>
+    </div>
+</div>
+
+<!-- SUB PAGE OVERLAY -->
+<div class="sub-page-overlay" id="subPageOverlay">
+    <div class="sub-page-content">
+        <button class="close-sub" id="closeSubPage">✕</button>
+        <h2 id="subTitle">Judul</h2>
+        <p class="sub-desc" id="subDesc">Deskripsi</p>
+        <img class="sub-image" id="subImage" style="display:none;" alt="Gambar materi">
+        <div id="subContentContainer"></div>
+    </div>
+</div>
+
+<!-- EDITOR MATERI -->
+<div class="sub-page-overlay" id="editorOverlay">
+    <div class="sub-page-content" style="max-width: 700px;">
+        <button class="close-sub" id="closeEditor">✕</button>
+        <h2 id="editorTitle">✏️ Edit Materi</h2>
+        <div class="materi-editor">
+            <div class="form-group">
+                <label>Judul Materi</label>
+                <input type="text" id="editJudul" placeholder="Masukkan judul materi">
+            </div>
+            <div class="form-group">
+                <label>Deskripsi</label>
+                <textarea id="editDeskripsi" placeholder="Masukkan deskripsi materi"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Gambar Materi</label>
+                <div class="image-upload-area" id="imageUploadArea">
+                    <span class="icon">🖼️</span>
+                    <p>Klik untuk upload gambar atau masukkan URL</p>
+                    <input type="file" id="imageFileInput" accept="image/*">
+                    <img class="image-preview" id="imagePreview" alt="Preview">
+                    <div style="margin-top:10px;">
+                        <input type="text" id="editImageUrl" placeholder="Atau masukkan URL gambar" style="width:100%; padding:8px 16px; border-radius:30px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.04); color:#fff; font-size:0.9rem;">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Sub Materi</label>
+                <div class="sub-items-container" id="subItemsContainer"></div>
+                <div class="add-sub-row">
+                    <input type="text" id="newSubInput" placeholder="Tambah sub materi...">
+                    <button class="btn btn-success" id="addSubBtn">+ Tambah</button>
+                </div>
+            </div>
+            <div class="btn-group-editor">
+                <button class="btn btn-primary" id="saveMateriEdit">💾 Simpan Perubahan</button>
+                <button class="btn" id="cancelMateriEdit">Batal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EDITOR SOAL -->
+<div class="sub-page-overlay" id="questionEditorOverlay">
+    <div class="sub-page-content" style="max-width: 700px;">
+        <button class="close-sub" id="closeQuestionEditor">✕</button>
+        <h2 id="questionEditorTitle">✏️ Edit Soal</h2>
+        <div class="question-editor">
+            <div class="form-group">
+                <label>Soal</label>
+                <textarea id="editQuestionText" placeholder="Masukkan teks soal"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Gambar Soal (opsional)</label>
+                <div class="image-upload-area" id="questionImageUploadArea">
+                    <span class="icon">🖼️</span>
+                    <p>Klik untuk upload gambar soal</p>
+                    <input type="file" id="questionImageFile" accept="image/*">
+                    <img class="image-preview" id="questionImagePreview" alt="Preview gambar soal">
+                    <div style="margin-top:10px;">
+                        <input type="text" id="editQuestionImageUrl" placeholder="Atau masukkan URL gambar" style="width:100%; padding:8px 16px; border-radius:30px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.04); color:#fff; font-size:0.9rem;">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Pilihan Jawaban</label>
+                <div class="options-container" id="optionsContainer"></div>
+                <button class="btn btn-success add-option-btn" id="addOptionBtn">+ Tambah Pilihan</button>
+            </div>
+            <div class="form-group">
+                <label>Jawaban Benar</label>
+                <select id="correctAnswerSelect" style="width:100%; padding:12px 18px; border-radius:16px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.04); color:#fff; font-size:0.95rem;">
+                    <option value="0">Pilihan 1</option>
+                </select>
+            </div>
+            <div class="btn-group-editor">
+                <button class="btn btn-primary" id="saveQuestionEdit">💾 Simpan Soal</button>
+                <button class="btn" id="cancelQuestionEdit">Batal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============================================
+    // DATA DEFAULT
+    // ============================================
+    const DEFAULT_MATERI = [{
+        id: 'm1',
+        judul: 'Pengantar HTML & CSS',
+        deskripsi: 'Dasar struktur web dan styling modern.',
+        image: 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=400&h=200&fit=crop',
+        sub: ['Tag HTML dasar', 'CSS Selector & Properti', 'Box Model & Layout', 'Flexbox Dasar']
+    }, {
+        id: 'm2',
+        judul: 'JavaScript Interaktif',
+        deskripsi: 'Logika pemrograman, DOM, dan event handling.',
+        image: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=400&h=200&fit=crop',
+        sub: ['Variabel & Tipe Data', 'Fungsi & Arrow Function', 'DOM Manipulation', 'Event Listener']
+    }, {
+        id: 'm3',
+        judul: 'Desain Responsif',
+        deskripsi: 'Teknik membuat web adaptif di semua perangkat.',
+        image: 'https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?w=400&h=200&fit=crop',
+        sub: ['Media Queries', 'Mobile First', 'Grid System', 'Responsive Images']
+    }];
+
+    const DEFAULT_LATIHAN = [{
+        id: 'l1',
+        judul: 'Latihan HTML Dasar',
+        deskripsi: 'Uji pemahaman HTML dasar dengan pilihan ganda.',
+        questions: [
+            { question: 'Apa fungsi dari tag <h1>?', image: '', options: ['Heading terbesar', 'Heading terkecil', 'Paragraf', 'Link'], answer: 0 },
+            { question: 'Tag apa yang digunakan untuk membuat link?', image: '', options: ['<link>', '<a>', '<href>', '<url>'], answer: 1 },
+            { question: 'Apa singkatan dari HTML?', image: '', options: ['Hyper Text Markup Language', 'High Tech Modern Language', 'Hyper Transfer Markup Language', 'Home Tool Markup Language'],
+                answer: 0 }
+        ]
+    }, {
+        id: 'l2',
+        judul: 'Latihan CSS Flexbox',
+        deskripsi: 'Uji pemahaman tentang CSS Flexbox.',
+        questions: [
+            { question: 'Properti apa untuk mengatur arah flex?', image: '', options: ['flex-direction', 'flex-wrap', 'justify-content', 'align-items'], answer: 0 },
+            { question: 'Apa fungsi justify-content: center?', image: '', options: ['Mengatur ke tengah horizontal', 'Mengatur ke tengah vertikal', 'Mengatur jarak antar item', 'Mengatur urutan item'],
+                answer: 0 },
+            { question: 'Properti apa untuk membungkus item flex?', image: '', options: ['flex-wrap', 'flex-direction', 'align-items', 'flex-flow'], answer: 0 }
+        ]
+    }, {
+        id: 'l3',
+        judul: 'Latihan JavaScript',
+        deskripsi: 'Uji pemahaman dasar JavaScript.',
+        questions: [
+            { question: 'Bagaimana cara mendeklarasikan variabel di JavaScript?', image: '', options: ['var', 'let', 'const', 'Semua benar'], answer: 3 },
+            { question: 'Apa output dari console.log(typeof 42)?', image: '', options: ['number', 'string', 'object', 'undefined'], answer: 0 },
+            { question: 'Fungsi apa untuk menampilkan pesan ke konsol?', image: '', options: ['console.log()', 'alert()', 'print()', 'echo()'], answer: 0 }
+        ]
+    }];
+
+    // ============================================
+    // STATE
+    // ============================================
+    let materiList = [];
+    let latihanList = [];
+    let isAdminMode = false;
+    let editingMateriId = null;
+    let editingQuestionData = null;
+    let tempSubItems = [];
+    let tempOptions = ['', ''];
+
+    // ============================================
+    // DOM REFS
+    // ============================================
+    const materiContainer = document.getElementById('materiContainer');
+    const latihanContainer = document.getElementById('latihanContainer');
+    const adminDashboard = document.getElementById('adminDashboard');
+    const adminLoginArea = document.getElementById('adminLoginArea');
+    const adminContentArea = document.getElementById('adminContentArea');
+    const loginMessage = document.getElementById('loginMessage');
+    const adminListContainer = document.getElementById('adminListContainer');
+    const adminMessage = document.getElementById('adminMessage');
+    const subPageOverlay = document.getElementById('subPageOverlay');
+    const subTitle = document.getElementById('subTitle');
+    const subDesc = document.getElementById('subDesc');
+    const subImage = document.getElementById('subImage');
+    const subContentContainer = document.getElementById('subContentContainer');
+
+    const editorOverlay = document.getElementById('editorOverlay');
+    const editJudul = document.getElementById('editJudul');
+    const editDeskripsi = document.getElementById('editDeskripsi');
+    const editImageUrl = document.getElementById('editImageUrl');
+    const imagePreview = document.getElementById('imagePreview');
+    const imageFileInput = document.getElementById('imageFileInput');
+    const imageUploadArea = document.getElementById('imageUploadArea');
+    const subItemsContainer = document.getElementById('subItemsContainer');
+    const newSubInput = document.getElementById('newSubInput');
+
+    const questionEditorOverlay = document.getElementById('questionEditorOverlay');
+    const editQuestionText = document.getElementById('editQuestionText');
+    const editQuestionImageUrl = document.getElementById('editQuestionImageUrl');
+    const questionImagePreview = document.getElementById('questionImagePreview');
+    const questionImageFile = document.getElementById('questionImageFile');
+    const questionImageUploadArea = document.getElementById('questionImageUploadArea');
+    const optionsContainer = document.getElementById('optionsContainer');
+    const correctAnswerSelect = document.getElementById('correctAnswerSelect');
+
+    // ============================================
+    // HEADER
+    // ============================================
+    function loadHeader() {
+        const headerData = localStorage.getItem('edulearn_header');
+        if (headerData) {
+            try {
+                const parsed = JSON.parse(headerData);
+                document.getElementById('siteLogo').innerHTML = parsed.siteTitle + ' <small>LMS</small>';
+                document.getElementById('heroTitle').textContent = parsed.heroTitle;
+                document.getElementById('heroSubtitle').textContent = parsed.heroSubtitle;
+                return parsed;
+            } catch (e) {}
+        }
+        return {
+            siteTitle: 'EduLearn',
+            heroTitle: 'Mulai Belajar Sekarang',
+            heroSubtitle: 'Platform pembelajaran modern dengan konten dinamis yang dapat dikelola oleh admin.'
+        };
+    }
+
+    function saveHeader(data) {
+        localStorage.setItem('edulearn_header', JSON.stringify(data));
+        document.getElementById('siteLogo').innerHTML = data.siteTitle + ' <small>LMS</small>';
+        document.getElementById('heroTitle').textContent = data.heroTitle;
+        document.getElementById('heroSubtitle').textContent = data.heroSubtitle;
+    }
+
+    // ============================================
+    // STORAGE
+    // ============================================
+    function loadFromStorage() {
+        const storedMateri = localStorage.getItem('edulearn_materi');
+        const storedLatihan = localStorage.getItem('edulearn_latihan');
+        materiList = storedMateri ? JSON.parse(storedMateri) : [];
+        latihanList = storedLatihan ? JSON.parse(storedLatihan) : [];
+        if (!materiList || materiList.length === 0) materiList = DEFAULT_MATERI.map(m => ({ ...m, id: String(m.id), sub: m.sub || [],
+            image: m.image || '' }));
+        if (!latihanList || latihanList.length === 0) latihanList = DEFAULT_LATIHAN.map(l => ({ ...l, id: String(l.id),
+            questions: l.questions || [] }));
+        saveAll();
+    }
+
+    function saveAll() {
+        localStorage.setItem('edulearn_materi', JSON.stringify(materiList));
+        localStorage.setItem('edulearn_latihan', JSON.stringify(latihanList));
+    }
+
+    // ============================================
+    // NAVIGASI
+    // ============================================
+    function navigateTo(page) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-links a[data-page]').forEach(a => a.classList.remove('active'));
+        const targetPage = document.getElementById('page-' + page);
+        if (targetPage) targetPage.classList.add('active');
+        const link = document.querySelector(`.nav-links a[data-page="${page}"]`);
+        if (link) link.classList.add('active');
+        updateStats();
+    }
+
+    // ============================================
+    // UPDATE STATS
+    // ============================================
+    function updateStats() {
+        const totalMateri = materiList.length;
+        const totalLatihan = latihanList.length;
+        const totalSub = materiList.reduce((acc, m) => acc + (m.sub ? m.sub.length : 0), 0) +
+            latihanList.reduce((acc, l) => acc + (l.questions ? l.questions.length : 0), 0);
+        document.getElementById('totalMateri').textContent = totalMateri;
+        document.getElementById('totalLatihan').textContent = totalLatihan;
+        document.getElementById('totalSub').textContent = totalSub;
+        document.getElementById('materiCount').textContent = totalMateri + ' materi';
+        document.getElementById('latihanCount').textContent = totalLatihan + ' latihan';
+    }
+
+    // ============================================
+    // RENDER PUBLIK
+    // ============================================
+    function renderPublic() {
+        if (materiList.length === 0) {
+            materiContainer.innerHTML =
+                `<div style="grid-column:1/-1; text-align:center; padding:40px; color:rgba(255,255,255,0.3);">Belum ada materi.</div>`;
+        } else {
+            materiContainer.innerHTML = materiList.map(m => `
+                    <div class="card" data-id="${m.id}" data-type="materi">
+                        ${m.image ? `<img class="card-image" src="${escapeHtml(m.image)}" alt="${escapeHtml(m.judul)}">` : '<span class="card-icon">📘</span>'}
+                        <h3>${escapeHtml(m.judul)}</h3>
+                        <p>${escapeHtml(m.deskripsi)}</p>
+                        <div class="card-meta">
+                            <span>${m.sub ? m.sub.length : 0} sub materi</span>
+                            ${m.image ? '<span class="badge">🖼️ Gambar</span>' : '<span class="badge">Klik untuk lihat</span>'}
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        if (latihanList.length === 0) {
+            latihanContainer.innerHTML =
+                `<div style="grid-column:1/-1; text-align:center; padding:40px; color:rgba(255,255,255,0.3);">Belum ada latihan.</div>`;
+        } else {
+            latihanContainer.innerHTML = latihanList.map(l => `
+                    <div class="card" data-id="${l.id}" data-type="latihan">
+                        <span class="card-icon">📝</span>
+                        <h3>${escapeHtml(l.judul)}</h3>
+                        <p>${escapeHtml(l.deskripsi)}</p>
+                        <div class="card-meta">
+                            <span>${l.questions ? l.questions.length : 0} soal</span>
+                            <span class="badge">Klik untuk kerjakan</span>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                const id = this.dataset.id;
+                const type = this.dataset.type;
+                const list = type === 'materi' ? materiList : latihanList;
+                const item = list.find(x => x.id === id);
+                if (item) {
+                    if (type === 'materi') {
+                        openMateriPage(item);
+                    } else {
+                        openLatihanPage(item);
+                    }
+                }
+            });
+        });
+
+        updateStats();
+    }
+
+    // ============================================
+    // OPEN MATERI
+    // ============================================
+    function openMateriPage(item) {
+        subTitle.textContent = item.judul;
+        subDesc.textContent = item.deskripsi;
+        if (item.image) {
+            subImage.style.display = 'block';
+            subImage.src = item.image;
+            subImage.alt = item.judul;
+        } else {
+            subImage.style.display = 'none';
+        }
+        if (item.sub && item.sub.length > 0) {
+            subContentContainer.innerHTML = `
+                    <ul class="sub-list">
+                        ${item.sub.map(s => `<li>${escapeHtml(s)}</li>`).join('')}
+                    </ul>
+                `;
+        } else {
+            subContentContainer.innerHTML =
+                `<p style="color:rgba(255,255,255,0.3); padding:20px 0;">Belum ada sub materi.</p>`;
+        }
+        subPageOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // ============================================
+    // OPEN LATIHAN
+    // ============================================
+    function openLatihanPage(item) {
+        subTitle.textContent = item.judul;
+        subDesc.textContent = item.deskripsi;
+        subImage.style.display = 'none';
+
+        if (item.questions && item.questions.length > 0) {
+            let html = `<div class="quiz-container">`;
+            item.questions.forEach((q, idx) => {
+                html += `
+                        <div class="quiz-question" data-qindex="${idx}">
+                            <div class="question-text">
+                                <span>${idx+1}. ${escapeHtml(q.question)}</span>
+                                ${isAdminMode ? `
+                                    <div class="q-actions">
+                                        <button class="btn btn-success" onclick="openQuestionEditor('${item.id}', ${idx})">✎ Edit</button>
+                                        <button class="btn btn-danger" onclick="deleteQuestion('${item.id}', ${idx})">✕</button>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            ${q.image ? `<img class="question-image" src="${escapeHtml(q.image)}" alt="Gambar soal">` : ''}
+                            <div class="quiz-options">
+                                ${q.options.map((opt, oi) => `
+                                    <div class="quiz-option" data-optindex="${oi}">
+                                        <input type="radio" name="q${idx}" value="${oi}" id="q${idx}_${oi}">
+                                        <label for="q${idx}_${oi}">${escapeHtml(opt)}</label>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+            });
+
+            html += `
+                    <button class="btn btn-primary" id="submitQuizBtn" style="margin-top:15px;">Kirim Jawaban</button>
+                    <div id="quizResult" class="quiz-result" style="display:none;"></div>
+                `;
+            subContentContainer.innerHTML = html;
+
+            if (isAdminMode) {
+                const container = document.getElementById('subContentContainer');
+                const addBtn = document.createElement('button');
+                addBtn.className = 'btn btn-primary';
+                addBtn.textContent = '+ Tambah Soal';
+                addBtn.style.marginTop = '15px';
+                addBtn.style.marginLeft = '10px';
+                addBtn.addEventListener('click', function() {
+                    addQuestionsToLatihan(item.id);
+                });
+                container.appendChild(addBtn);
+            }
+
+            document.getElementById('submitQuizBtn')?.addEventListener('click', function() {
+                let correctCount = 0;
+                let total = item.questions.length;
+                let allAnswered = true;
+
+                item.questions.forEach((q, idx) => {
+                    const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                    if (selected) {
+                        const value = parseInt(selected.value);
+                        const isCorrect = value === q.answer;
+                        if (isCorrect) correctCount++;
+                        const options = document.querySelectorAll(`.quiz-question[data-qindex="${idx}"] .quiz-option`);
+                        options.forEach((opt, oi) => {
+                            opt.classList.remove('correct', 'wrong');
+                            if (oi === q.answer) opt.classList.add('correct');
+                            if (oi === value && !isCorrect) opt.classList.add('wrong');
+                        });
+                    } else {
+                        allAnswered = false;
+                    }
+                });
+
+                const resultDiv = document.getElementById('quizResult');
+                resultDiv.style.display = 'block';
+                if (!allAnswered) {
+                    resultDiv.textContent = '⚠️ Jawab semua soal terlebih dahulu!';
+                    resultDiv.className = 'quiz-result fail';
+                    return;
+                }
+
+                const percentage = Math.round((correctCount / total) * 100);
+                if (percentage >= 70) {
+                    resultDiv.textContent = `✅ Selamat! ${correctCount} dari ${total} benar (${percentage}%). Lulus!`;
+                    resultDiv.className = 'quiz-result pass';
+                } else {
+                    resultDiv.textContent = `❌ ${correctCount} dari ${total} benar (${percentage}%). Coba lagi!`;
+                    resultDiv.className = 'quiz-result fail';
+                }
+            });
+
+        } else {
+            let html = `<p style="color:rgba(255,255,255,0.3); padding:20px 0;">Belum ada soal untuk latihan ini.</p>`;
+            if (isAdminMode) {
+                html += `
+                        <button class="btn btn-primary" id="addQuestionsBtn">+ Tambah Soal</button>
+                    `;
+            }
+            subContentContainer.innerHTML = html;
+            document.getElementById('addQuestionsBtn')?.addEventListener('click', function() {
+                addQuestionsToLatihan(item.id);
+            });
+        }
+
+        subPageOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // ============================================
+    // QUESTION EDITOR
+    // ============================================
+    window.openQuestionEditor = function(latihanId, qIndex) {
+        const latihan = latihanList.find(l => l.id === latihanId);
+        if (!latihan || !latihan.questions[qIndex]) return;
+        const q = latihan.questions[qIndex];
+
+        editingQuestionData = { latihanId, qIndex };
+        document.getElementById('questionEditorTitle').textContent = '✏️ Edit Soal';
+
+        editQuestionText.value = q.question || '';
+        editQuestionImageUrl.value = q.image || '';
+        tempOptions = [...(q.options || ['', ''])];
+        renderOptions();
+
+        if (q.image) {
+            questionImagePreview.src = q.image;
+            questionImagePreview.classList.add('show');
+        } else {
+            questionImagePreview.classList.remove('show');
+            questionImagePreview.src = '';
+        }
+
+        correctAnswerSelect.value = q.answer || 0;
+
+        questionEditorOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+
+    function closeQuestionEditor() {
+        questionEditorOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        editingQuestionData = null;
+        tempOptions = ['', ''];
+    }
+
+    function renderOptions() {
+        optionsContainer.innerHTML = '';
+        tempOptions.forEach((opt, idx) => {
+            const row = document.createElement('div');
+            row.className = 'option-row';
+            row.innerHTML = `
+                    <span class="opt-label">${String.fromCharCode(65 + idx)}.</span>
+                    <input type="text" value="${escapeHtml(opt)}" placeholder="Pilihan ${idx+1}" data-index="${idx}" oninput="updateOption(${idx}, this.value)">
+                    ${tempOptions.length > 2 ? `<span class="remove-opt" onclick="removeOption(${idx})">×</span>` : ''}
+                `;
+            optionsContainer.appendChild(row);
+        });
+
+        correctAnswerSelect.innerHTML = '';
+        tempOptions.forEach((_, idx) => {
+            const opt = document.createElement('option');
+            opt.value = idx;
+            opt.textContent = `Pilihan ${idx+1}`;
+            correctAnswerSelect.appendChild(opt);
+        });
+        if (editingQuestionData) {
+            const latihan = latihanList.find(l => l.id === editingQuestionData.latihanId);
+            if (latihan && latihan.questions[editingQuestionData.qIndex]) {
+                correctAnswerSelect.value = latihan.questions[editingQuestionData.qIndex].answer || 0;
+            }
+        }
+    }
+
+    window.updateOption = function(index, value) {
+        tempOptions[index] = value;
+    };
+
+    window.addOption = function() {
+        tempOptions.push('');
+        renderOptions();
+    };
+
+    window.removeOption = function(index) {
+        if (tempOptions.length <= 2) {
+            alert('Minimal 2 pilihan!');
+            return;
+        }
+        tempOptions.splice(index, 1);
+        renderOptions();
+    };
+
+    // Question image upload
+    questionImageUploadArea.addEventListener('click', function(e) {
+        if (e.target.closest('input') || e.target.closest('.image-preview')) return;
+        questionImageFile.click();
+    });
+
+    questionImageFile.addEventListener('change', function(e) {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const dataUrl = event.target.result;
+                questionImagePreview.src = dataUrl;
+                questionImagePreview.classList.add('show');
+                editQuestionImageUrl.value = dataUrl;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    editQuestionImageUrl.addEventListener('input', function() {
+        const url = this.value.trim();
+        if (url) {
+            questionImagePreview.src = url;
+            questionImagePreview.classList.add('show');
+        } else {
+            questionImagePreview.classList.remove('show');
+            questionImagePreview.src = '';
+        }
+    });
+
+    // Save question
+    document.getElementById('saveQuestionEdit').addEventListener('click', function() {
+        if (!editingQuestionData) return;
+        const { latihanId, qIndex } = editingQuestionData;
+        const latihan = latihanList.find(l => l.id === latihanId);
+        if (!latihan) return;
+
+        const question = editQuestionText.value.trim();
+        if (!question) {
+            showAdminMessage('⚠️ Soal wajib diisi!', 'rgba(255,200,100,0.7)');
+            return;
+        }
+
+        const options = tempOptions.filter(o => o.trim() !== '');
+        if (options.length < 2) {
+            showAdminMessage('⚠️ Minimal 2 pilihan!', 'rgba(255,200,100,0.7)');
+            return;
+        }
+
+        const answer = parseInt(correctAnswerSelect.value);
+        if (isNaN(answer) || answer < 0 || answer >= options.length) {
+            showAdminMessage('⚠️ Jawaban benar tidak valid!', 'rgba(255,200,100,0.7)');
+            return;
+        }
+
+        latihan.questions[qIndex] = {
+            question: question,
+            image: editQuestionImageUrl.value.trim() || '',
+            options: options,
+            answer: answer
+        };
+
+        saveAll();
+        renderPublic();
+        renderAdminList();
+        closeQuestionEditor();
+        closeSubPage();
+        setTimeout(() => openLatihanPage(latihan), 300);
+        showAdminMessage('✅ Soal berhasil diperbarui!', 'rgba(100,255,100,0.7)');
+    });
+
+    document.getElementById('cancelQuestionEdit').addEventListener('click', closeQuestionEditor);
+    document.getElementById('closeQuestionEditor').addEventListener('click', closeQuestionEditor);
+    questionEditorOverlay.addEventListener('click', function(e) {
+        if (e.target === this) closeQuestionEditor();
+    });
+
+    // ============================================
+    // DELETE QUESTION
+    // ============================================
+    window.deleteQuestion = function(latihanId, qIndex) {
+        if (!confirm('Hapus soal ini?')) return;
+        const latihan = latihanList.find(l => l.id === latihanId);
+        if (!latihan) return;
+        latihan.questions.splice(qIndex, 1);
+        saveAll();
+        renderPublic();
+        renderAdminList();
+        closeSubPage();
+        setTimeout(() => openLatihanPage(latihan), 300);
+        showAdminMessage('🗑️ Soal dihapus.', 'rgba(255,150,150,0.7)');
+    };
+
+    // ============================================
+    // TAMBAH SOAL
+    // ============================================
+    function addQuestionsToLatihan(latihanId) {
+        const latihan = latihanList.find(l => l.id === latihanId);
+        if (!latihan) return;
+
+        editingQuestionData = { latihanId, qIndex: latihan.questions.length };
+        document.getElementById('questionEditorTitle').textContent = '➕ Tambah Soal Baru';
+
+        editQuestionText.value = '';
+        editQuestionImageUrl.value = '';
+        tempOptions = ['', ''];
+        renderOptions();
+        questionImagePreview.classList.remove('show');
+        questionImagePreview.src = '';
+        correctAnswerSelect.value = 0;
+
+        questionEditorOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // ============================================
+    // EDITOR MATERI
+    // ============================================
+    function openMateriEditor(materiId) {
+        const materi = materiList.find(m => m.id === materiId);
+        if (!materi) return;
+
+        editingMateriId = materiId;
+        document.getElementById('editorTitle').textContent = '✏️ Edit Materi';
+        editJudul.value = materi.judul || '';
+        editDeskripsi.value = materi.deskripsi || '';
+        editImageUrl.value = materi.image || '';
+        tempSubItems = [...(materi.sub || [])];
+
+        if (materi.image) {
+            imagePreview.src = materi.image;
+            imagePreview.classList.add('show');
+        } else {
+            imagePreview.classList.remove('show');
+            imagePreview.src = '';
+        }
+
+        renderSubItems();
+        editorOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMateriEditor() {
+        editorOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        editingMateriId = null;
+        tempSubItems = [];
+    }
+
+    function renderSubItems() {
+        subItemsContainer.innerHTML = '';
+        tempSubItems.forEach((item, index) => {
+            const tag = document.createElement('span');
+            tag.className = 'sub-item-tag';
+            tag.innerHTML = `${escapeHtml(item)} <span class="remove" data-index="${index}">×</span>`;
+            tag.querySelector('.remove').addEventListener('click', function(e) {
+                e.stopPropagation();
+                const idx = parseInt(this.dataset.index);
+                tempSubItems.splice(idx, 1);
+                renderSubItems();
+            });
+            subItemsContainer.appendChild(tag);
+        });
+    }
+
+    function addSubItem() {
+        const text = newSubInput.value.trim();
+        if (text) {
+            tempSubItems.push(text);
+            newSubInput.value = '';
+            renderSubItems();
+        }
+    }
+
+    // Materi image upload
+    imageUploadArea.addEventListener('click', function(e) {
+        if (e.target.closest('input') || e.target.closest('.image-preview')) return;
+        imageFileInput.click();
+    });
+
+    imageFileInput.addEventListener('change', function(e) {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const dataUrl = event.target.result;
+                imagePreview.src = dataUrl;
+                imagePreview.classList.add('show');
+                editImageUrl.value = dataUrl;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    editImageUrl.addEventListener('input', function() {
+        const url = this.value.trim();
+        if (url) {
+            imagePreview.src = url;
+            imagePreview.classList.add('show');
+        } else {
+            imagePreview.classList.remove('show');
+            imagePreview.src = '';
+        }
+    });
+
+    // Save materi
+    document.getElementById('saveMateriEdit').addEventListener('click', function() {
+        if (!editingMateriId) return;
+        const judul = editJudul.value.trim();
+        if (!judul) {
+            showAdminMessage('⚠️ Judul wajib diisi!', 'rgba(255,200,100,0.7)');
+            return;
+        }
+        const materi = materiList.find(m => m.id === editingMateriId);
+        if (materi) {
+            materi.judul = judul;
+            materi.deskripsi = editDeskripsi.value.trim() || 'Deskripsi';
+            materi.image = editImageUrl.value.trim() || '';
+            materi.sub = [...tempSubItems];
+            saveAll();
+            renderPublic();
+            renderAdminList();
+            closeMateriEditor();
+            showAdminMessage('✅ Materi berhasil diperbarui!', 'rgba(100,255,100,0.7)');
+        }
+    });
+
+    document.getElementById('cancelMateriEdit').addEventListener('click', closeMateriEditor);
+    document.getElementById('closeEditor').addEventListener('click', closeMateriEditor);
+    editorOverlay.addEventListener('click', function(e) {
+        if (e.target === this) closeMateriEditor();
+    });
+
+    newSubInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addSubItem();
+        }
+    });
+
+    document.getElementById('addSubBtn').addEventListener('click', addSubItem);
+
+    // ============================================
+    // CLOSE SUB
+    // ============================================
+    function closeSubPage() {
+        subPageOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // ============================================
+    // RENDER ADMIN LIST
+    // ============================================
+    function renderAdminList() {
+        if (!adminListContainer) return;
+        const allItems = [
+            ...materiList.map(m => ({ ...m, type: 'materi', icon: '📘' })),
+            ...latihanList.map(l => ({ ...l, type: 'latihan', icon: '📝' }))
+        ];
+
+        if (allItems.length === 0) {
+            adminListContainer.innerHTML =
+                `<div style="color:rgba(255,255,255,0.3); padding:15px 0;">Belum ada konten.</div>`;
+            return;
+        }
+
+        let html = '';
+        allItems.forEach(item => {
+            const subCount = item.type === 'materi' ? (item.sub ? item.sub.length : 0) : (item.questions ? item
+                .questions.length : 0);
+            html += `
+                    <div class="admin-item">
+                        <span class="item-title">${item.icon} ${escapeHtml(item.judul)}</span>
+                        <span class="item-desc">${escapeHtml(item.deskripsi)}</span>
+                        <span class="item-type">${item.type} (${subCount})</span>
+                        <div class="btn-group">
+                            ${item.type === 'latihan' ? `<button class="btn btn-success" data-id="${item.id}" data-type="${item.type}" data-action="addquestion">+ Soal</button>` : ''}
+                            <button class="btn btn-primary" data-id="${item.id}" data-type="${item.type}" data-action="edit">✎</button>
+                            <button class="btn btn-danger" data-id="${item.id}" data-type="${item.type}" data-action="hapus">✕</button>
+                        </div>
+                    </div>
+                `;
+        });
+        adminListContainer.innerHTML = html;
+
+        adminListContainer.querySelectorAll('[data-action="edit"]').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const id = this.dataset.id;
+                const type = this.dataset.type;
+                if (type === 'materi') {
+                    openMateriEditor(id);
+                } else {
+                    const list = latihanList;
+                    const item = list.find(x => x.id === id);
+                    if (!item) return;
+                    const newJudul = prompt('Edit judul:', item.judul);
+                    if (newJudul !== null && newJudul.trim() !== '') {
+                        const newDeskripsi = prompt('Edit deskripsi:', item.deskripsi);
+                        if (newDeskripsi !== null) {
+                            item.judul = newJudul.trim();
+                            item.deskripsi = newDeskripsi.trim() || item.deskripsi;
+                            saveAll();
+                            renderPublic();
+                            renderAdminList();
+                            showAdminMessage('✅ Latihan berhasil diedit.', 'rgba(100,255,100,0.7)');
+                        }
+                    }
+                }
+            });
+        });
+
+        adminListContainer.querySelectorAll('[data-action="addquestion"]').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const id = this.dataset.id;
+                addQuestionsToLatihan(id);
+            });
+        });
+
+        adminListContainer.querySelectorAll('[data-action="hapus"]').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const id = this.dataset.id;
+                const type = this.dataset.type;
+                if (confirm(`Hapus ${type} ini?`)) {
+                    if (type === 'materi') {
+                        materiList = materiList.filter(m => m.id !== id);
+                    } else {
+                        latihanList = latihanList.filter(l => l.id !== id);
+                    }
+                    saveAll();
+                    renderPublic();
+                    renderAdminList();
+                    showAdminMessage('🗑️ Konten dihapus.', 'rgba(255,150,150,0.7)');
+                }
+            });
+        });
+    }
+
+    // ============================================
+    // UTILITY
+    // ============================================
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function showAdminMessage(msg, color = 'rgba(255,255,255,0.7)') {
+        if (adminMessage) {
+            adminMessage.textContent = msg;
+            adminMessage.style.color = color;
+            setTimeout(() => { adminMessage.textContent = ''; }, 3500);
+        }
+    }
+
+    // ============================================
+    // ADMIN LOGIN
+    // ============================================
+    function loginAdmin(password) {
+        if (password === 'akuganteng') {
+            isAdminMode = true;
+            loginMessage.textContent = '';
+            adminLoginArea.style.display = 'none';
+            adminContentArea.style.display = 'block';
+            renderAdminList();
+            adminDashboard.classList.add('active');
+            adminDashboard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showAdminMessage('🔓 Mode admin aktif.', 'rgba(100,255,100,0.7)');
+            return true;
+        } else {
+            loginMessage.textContent = '❌ Password salah.';
+            loginMessage.style.color = 'rgba(255,150,150,0.8)';
+            return false;
+        }
+    }
+
+    function logoutAdmin() {
+        isAdminMode = false;
+        adminLoginArea.style.display = 'flex';
+        adminContentArea.style.display = 'none';
+        loginMessage.textContent = '';
+        adminDashboard.classList.remove('active');
+        document.getElementById('adminPassword').value = '';
+        showAdminMessage('👋 Keluar dari mode admin.', 'rgba(255,255,255,0.4)');
+        closeSubPage();
+        closeMateriEditor();
+        closeQuestionEditor();
+    }
+
+    // ============================================
+    // EVENT LISTENERS
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function() {
+        loadHeader();
+        loadFromStorage();
+        renderPublic();
+
+        document.querySelectorAll('.nav-links a[data-page]').forEach(link => {
+            link.addEventListener('click', function() {
+                const page = this.dataset.page;
+                navigateTo(page);
+            });
+        });
+
+        document.getElementById('adminToggle').addEventListener('click', function(e) {
+            e.preventDefault();
+            adminDashboard.classList.toggle('active');
+            if (!adminDashboard.classList.contains('active')) {
+                if (!isAdminMode) {
+                    adminLoginArea.style.display = 'flex';
+                    adminContentArea.style.display = 'none';
+                    loginMessage.textContent = '';
+                }
+            } else {
+                if (isAdminMode) {
+                    adminLoginArea.style.display = 'none';
+                    adminContentArea.style.display = 'block';
+                    renderAdminList();
+                } else {
+                    adminLoginArea.style.display = 'flex';
+                    adminContentArea.style.display = 'none';
+                }
+            }
+        });
+
+        document.getElementById('loginAdminBtn').addEventListener('click', function() {
+            const pwd = document.getElementById('adminPassword').value;
+            loginAdmin(pwd);
+        });
+
+        document.getElementById('adminPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('loginAdminBtn').click();
+        });
+
+        document.getElementById('logoutAdminBtn').addEventListener('click', function() {
+            logoutAdmin();
+            adminDashboard.classList.remove('active');
+        });
+
+        document.getElementById('saveHeaderBtn').addEventListener('click', function() {
+            const siteTitle = document.getElementById('editSiteTitle').value.trim() || 'EduLearn';
+            const heroTitle = document.getElementById('editHeroTitle').value.trim() || 'Mulai Belajar Sekarang';
+            const heroSubtitle = document.getElementById('editHeroSubtitle').value.trim() ||
+                'Platform pembelajaran modern dengan konten dinamis.';
+            saveHeader({ siteTitle, heroTitle, heroSubtitle });
+            showAdminMessage('✅ Header berhasil diperbarui!', 'rgba(100,255,100,0.7)');
+            document.getElementById('editSiteTitle').value = '';
+            document.getElementById('editHeroTitle').value = '';
+            document.getElementById('editHeroSubtitle').value = '';
+        });
+
+        document.getElementById('tambahMateriBtn').addEventListener('click', function() {
+            if (!isAdminMode) { showAdminMessage('⚠️ Login admin dulu.', 'rgba(255,200,100,0.7)'); return; }
+            const judul = document.getElementById('newMateriJudul').value.trim();
+            const deskripsi = document.getElementById('newMateriDeskripsi').value.trim();
+            const image = document.getElementById('newMateriImage').value.trim();
+            const subText = document.getElementById('newMateriSub').value.trim();
+            if (!judul) { showAdminMessage('⚠️ Judul wajib diisi.', 'rgba(255,200,100,0.7)'); return; }
+            const sub = subText ? subText.split(',').map(s => s.trim()).filter(s => s) : [];
+            materiList.push({ id: 'm' + Date.now(), judul, deskripsi: deskripsi || 'Deskripsi', image: image || '',
+                sub });
+            document.getElementById('newMateriJudul').value = '';
+            document.getElementById('newMateriDeskripsi').value = '';
+            document.getElementById('newMateriImage').value = '';
+            document.getElementById('newMateriSub').value = '';
+            saveAll();
+            renderPublic();
+            renderAdminList();
+            showAdminMessage('✅ Materi ditambahkan.', 'rgba(100,255,100,0.7)');
+        });
+
+        document.getElementById('tambahLatihanBtn').addEventListener('click', function() {
+            if (!isAdminMode) { showAdminMessage('⚠️ Login admin dulu.', 'rgba(255,200,100,0.7)'); return; }
+            const judul = document.getElementById('newLatihanJudul').value.trim();
+            const deskripsi = document.getElementById('newLatihanDeskripsi').value.trim();
+            if (!judul) { showAdminMessage('⚠️ Judul wajib diisi.', 'rgba(255,200,100,0.7)'); return; }
+            latihanList.push({ id: 'l' + Date.now(), judul, deskripsi: deskripsi || 'Deskripsi', questions: [] });
+            document.getElementById('newLatihanJudul').value = '';
+            document.getElementById('newLatihanDeskripsi').value = '';
+            saveAll();
+            renderPublic();
+            renderAdminList();
+            showAdminMessage('✅ Latihan ditambahkan. Klik latihan untuk tambah soal.', 'rgba(100,255,100,0.7)');
+        });
+
+        document.getElementById('closeSubPage').addEventListener('click', closeSubPage);
+        subPageOverlay.addEventListener('click', function(e) {
+            if (e.target === this) closeSubPage();
+        });
+
+        // ============================================
+        // FIX: Event listener untuk tombol tambah pilihan di editor soal
+        // ============================================
+        document.getElementById('addOptionBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.addOption();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeSubPage();
+                closeMateriEditor();
+                closeQuestionEditor();
+            }
+        });
+
+        navigateTo('beranda');
+    });
+</script>
+</body>
+</html>
